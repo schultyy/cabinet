@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
-import gql from 'graphql-tag';
 import { saveToken, getToken } from './tokenStore';
-import { getRepositoriesQuery } from './queries';
+import Facade from './Facade';
 import './App.css';
 
 class App extends Component {
@@ -11,22 +9,12 @@ class App extends Component {
     super();
 
     this.accessToken = getToken();
+    this.facade = new Facade(this.accessToken);
 
     this.state = {
       hasToken: !!this.accessToken,
       repositories: []
     };
-
-    this.apolloClient = new ApolloClient({
-      networkInterface: createNetworkInterface({
-        uri: 'https://api.github.com/graphql',
-        opts: {
-          headers: {
-            'Authorization': `Bearer ${this.accessToken}`
-          }
-        }
-      })
-    });
   }
 
   componentDidMount() {
@@ -34,15 +22,13 @@ class App extends Component {
   }
 
   getRepositories() {
-    this.apolloClient.query({
-      query: gql(getRepositoriesQuery)
-    })
-    .then(resultSet => {
-      this.setState({
-        repositories: resultSet.data.viewer.repositories.nodes
-      });
-    })
-    .catch(error => console.error(error));
+    this.facade.loadRepositories()
+                .then(resultSet => {
+                  this.setState({
+                    repositories: resultSet.data.viewer.repositories.nodes
+                  });
+                })
+                .catch(error => console.error(error));
   }
 
   getIssues() {
