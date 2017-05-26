@@ -25,6 +25,18 @@
   max-width: 200px;
 }
 
+.App .repo-list .repository button {
+  border: none;
+  background: transparent;
+  color: black;
+  width: 100%;
+}
+
+.App .repo-list .repository:hover {
+  background-color: #847FFF;
+  cursor: pointer;
+}
+
 .App .repository-issues {
   margin-left: 15px;
   width: 100%;

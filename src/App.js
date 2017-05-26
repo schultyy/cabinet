@@ -53,6 +53,10 @@ class App extends Component {
     this.getRepositories();
   }
 
+  onSelectRepository(repository) {
+    console.log(repository);
+  }
+
   render() {
     const hasToken = this.state.hasToken;
 
@@ -82,8 +86,8 @@ class App extends Component {
           <div className="repo-list">
             <ul>
               {repositories.map(r => (
-                <li className="repository">
-                  {r.name}
+                <li key={r._id} className="repository">
+                  <button onClick={() => this.onSelectRepository(r)}>{r.name}</button>
                 </li>
               ))}
             </ul>
