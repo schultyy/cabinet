@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.App .repo-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.App .repo-list ul {
+  list-style-type: none;
+}
+
+.App .repo-list h3 {
+  padding-left: 5px;
+}
+
+.App .repo-list .repository {
+  padding: 5px;
+  font-size: 15px;
+  border: 1px solid #8427A2;
+  border-radius: 2px;
+}
+
