@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import gql from 'graphql-tag';
 import { saveToken, getToken } from './tokenStore';
 import './App.css';
 
@@ -7,14 +9,36 @@ class App extends Component {
   constructor() {
     super();
 
+    this.accessToken = getToken();
+
     this.state = {
-      hasToken: false
+      hasToken: !!this.accessToken
     };
+
+    this.apolloClient = new ApolloClient({
+      networkInterface: createNetworkInterface({
+        uri: 'https://api.github.com/graphql',
+        opts: {
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`
+          }
+        }
+      })
+    });
   }
 
   componentDidMount() {
-    const hasToken = !!getToken();
-    this.setState({ hasToken: hasToken });
+
+    this.apolloClient.query({
+      query: gql`
+        query currentUser {
+          viewer {
+            login
+          }
+        }`,
+    })
+    .then(data => console.log(data.data))
+    .catch(error => console.error(error));
   }
 
   getRepositories() {
