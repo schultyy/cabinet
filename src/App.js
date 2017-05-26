@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
 import { saveToken, getToken } from './tokenStore';
+import { getRepositoriesQuery } from './queries';
 import './App.css';
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
     this.accessToken = getToken();
 
     this.state = {
-      hasToken: !!this.accessToken
+      hasToken: !!this.accessToken,
+      repositories: []
     };
 
     this.apolloClient = new ApolloClient({
@@ -28,25 +30,19 @@ class App extends Component {
   }
 
   componentDidMount() {
-
-    this.apolloClient.query({
-      query: gql`
-        query currentUser {
-          viewer {
-            login
-          }
-        }`,
-    })
-    .then(data => console.log(data.data))
-    .catch(error => console.error(error));
+    this.getRepositories();
   }
 
   getRepositories() {
-    return [
-      "Foo",
-      "Bar",
-      "Baz"
-    ];
+    this.apolloClient.query({
+      query: gql(getRepositoriesQuery)
+    })
+    .then(resultSet => {
+      this.setState({
+        repositories: resultSet.data.viewer.repositories.nodes
+      });
+    })
+    .catch(error => console.error(error));
   }
 
   getIssues() {
@@ -77,6 +73,8 @@ class App extends Component {
       configurationClassNames = "configuration visible";
     }
 
+    const { repositories } = this.state;
+
     return (
       <div className="App">
         <h3>Configure your GitHub OAuth token</h3>
@@ -91,9 +89,9 @@ class App extends Component {
         <div className="repos">
           <div className="repo-list">
             <ul>
-              {this.getRepositories().map(r => (
+              {repositories.map(r => (
                 <li className="repository">
-                  {r}
+                  {r.name}
                 </li>
               ))}
             </ul>
