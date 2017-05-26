@@ -88,7 +88,7 @@ class App extends Component {
                   ref="saveGitHubToken"
                   className="saveToken" />
         </div>
-        <div class="repos">
+        <div className="repos">
           <div className="repo-list">
             <ul>
               {this.getRepositories().map(r => (
