@@ -1,7 +1,7 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
 import PouchDB from 'pouchdb';
-import { getRepositoriesQuery } from './queries';
+import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 
 export default class Facade {
   constructor(accessToken) {
@@ -45,5 +45,11 @@ export default class Facade {
     }))
     .then(() => this.database.allDocs({include_docs: true}))
     .then((resultSet) => resultSet.rows.map(row => row.doc));
+  }
+
+  loadIssuesForRepository(repositoryName) {
+    return this.apolloClient.query({
+      query: gql(getIssuesForRepositoryQuery(repositoryName))
+    });
   }
 }

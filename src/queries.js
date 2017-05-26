@@ -9,3 +9,19 @@ export const getRepositoriesQuery = `query getRepos {
     }
   }
 }`;
+
+export const getIssuesForRepositoryQuery = (repository) => {
+  return `query GetIssues {
+    viewer {
+      repository(name: "${repository}") {
+        issues(first: 100) {
+          nodes {
+            id,
+            number,
+            title
+          }
+        }
+      }
+    }
+  }`;
+};

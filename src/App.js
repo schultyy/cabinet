@@ -13,7 +13,9 @@ class App extends Component {
 
     this.state = {
       hasToken: !!this.accessToken,
-      repositories: []
+      repositories: [],
+      selectedRepository: null,
+      issues: []
     };
   }
 
@@ -54,7 +56,15 @@ class App extends Component {
   }
 
   onSelectRepository(repository) {
-    console.log(repository);
+    this.setState({
+      selectedRepository: repository
+    });
+    this.facade.loadIssuesForRepository(repository.name)
+    .then(resultSet => {
+      this.setState({
+        issues: resultSet.data.viewer.repository.issues.nodes
+      });
+    });
   }
 
   render() {
@@ -69,7 +79,7 @@ class App extends Component {
       configurationClassNames = "configuration visible";
     }
 
-    const { repositories } = this.state;
+    const { issues, repositories } = this.state;
 
     return (
       <div className="App">
@@ -94,9 +104,9 @@ class App extends Component {
           </div>
           <div className="repository-issues">
             <ul className="issues">
-              {this.getIssues().map(i => (
+              {issues.map(i => (
                 <li className="issue">
-                  {i}
+                  {`${i.number} - ${i.title}`}
                 </li>
               ))}
             </ul>
