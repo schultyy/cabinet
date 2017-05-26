@@ -22,13 +22,17 @@ class App extends Component {
   }
 
   getRepositories() {
-    this.facade.loadRepositories()
-                .then(resultSet => {
-                  this.setState({
-                    repositories: resultSet.data.viewer.repositories.nodes
-                  });
-                })
-                .catch(error => console.error(error));
+    if (this.accessToken) {
+      this.facade.loadRepositories()
+                  .then(resultSet => {
+                    this.setState({
+                      repositories: resultSet
+                    });
+                  })
+                  .catch(error => console.error(error));
+    } else {
+      console.warn('No access token set');
+    }
   }
 
   getIssues() {
@@ -45,6 +49,8 @@ class App extends Component {
     const token = this.refs.githubToken.value;
     saveToken(token);
     this.setState({ hasToken: true });
+    this.facade = new Facade(token);
+    this.getRepositories();
   }
 
   render() {

@@ -20,10 +20,17 @@ export default class Facade {
   }
 
   loadRepositories() {
-    return this.apolloClient.query({
-      query: gql(getRepositoriesQuery)
-    })
-    .then((resultSet) => this.storeRepositories(resultSet));
+    return this.database.allDocs({include_docs: true})
+    .then(resultSet => {
+      if (resultSet.total_rows > 0) {
+        return Promise.resolve(resultSet.rows.map(row => row.doc));
+      } else {
+        return this.apolloClient.query({
+          query: gql(getRepositoriesQuery)
+        })
+        .then((resultSet) => this.storeRepositories(resultSet));
+      }
+    });
   }
 
   storeRepositories(resultSet) {
@@ -36,6 +43,7 @@ export default class Facade {
         createdAt: repository.createdAt
       });
     }))
-    .then(() => resultSet);
+    .then(() => this.database.allDocs({include_docs: true}))
+    .then((resultSet) => resultSet.rows.map(row => row.doc));
   }
 }
