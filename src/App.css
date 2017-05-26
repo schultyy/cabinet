@@ -22,5 +22,18 @@
   font-size: 15px;
   border: 1px solid #8427A2;
   border-radius: 2px;
+  width: 150px;
 }
 
+.App .repository-issues .issues {
+  list-style-type: none;
+  border: 1px solid #8427A2;
+  border-radius: 2px;
+  margin-left: 15px;
+  padding: 0px;
+}
+
+.App .repository-issues .issues .issue {
+  border: 1px solid #8427A2;
+  padding: 15px;
+}
