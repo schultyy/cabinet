@@ -110,17 +110,15 @@ class App extends Component {
             </ul>
           </div>
           <div className="repository-issues">
-            <ul className="issues">
-              {issues.length === 0 ?
-              <div className="info">Select a repository from the left</div>
-              :
-                issues.map(i => (
+            {issues.length > 0 ?
+              <ul className="issues">
+                {issues.map(i => (
                   <li className="issue">
                     {`${i.number} - ${i.title}`}
                   </li>
-                ))
-              }
-            </ul>
+                ))}
+              </ul>
+            : null }
           </div>
         </div>
       </div>
