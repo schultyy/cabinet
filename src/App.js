@@ -57,7 +57,8 @@ class App extends Component {
 
   onSelectRepository(repository) {
     this.setState({
-      selectedRepository: repository
+      selectedRepository: repository,
+      issues: []
     });
     this.facade.loadIssuesForRepository(repository.name)
     .then(resultSet => {
