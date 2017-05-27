@@ -83,14 +83,17 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h3>Configure your GitHub OAuth token</h3>
+        <h1>GitHub Offline Issues</h1>
         <div className={configurationClassNames}>
-          <input type="text" ref="githubToken" className="githubToken" />
-          <input type="button"
-                  value="Save Token"
-                  onClick={() => this.onSaveToken()}
-                  ref="saveGitHubToken"
-                  className="saveToken" />
+          <h3>Configure your GitHub OAuth token</h3>
+          <div class="controls">
+            <input type="text" ref="githubToken" className="githubToken" />
+            <input type="button"
+                    value="Save Token"
+                    onClick={() => this.onSaveToken()}
+                    ref="saveGitHubToken"
+                    className="saveToken" />
+          </div>
         </div>
         <div className="repos">
           <div className="repo-list">
@@ -104,11 +107,15 @@ class App extends Component {
           </div>
           <div className="repository-issues">
             <ul className="issues">
-              {issues.map(i => (
-                <li className="issue">
-                  {`${i.number} - ${i.title}`}
-                </li>
-              ))}
+              {issues.length === 0 ?
+              <div className="info">Select a repository from the left</div>
+              :
+                issues.map(i => (
+                  <li className="issue">
+                    {`${i.number} - ${i.title}`}
+                  </li>
+                ))
+              }
             </ul>
           </div>
         </div>

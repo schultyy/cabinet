@@ -57,9 +57,19 @@
 
 .App .configuration.visible {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .App .configuration.hidden {
   display: none;
+}
+
+.App .configuration .controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.info {
+  font-size: 16px;
+  padding: 5px;
 }
