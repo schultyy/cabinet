@@ -48,10 +48,10 @@ class App extends Component {
   }
 
   onSaveToken() {
-    const token = this.refs.githubToken.value;
-    saveToken(token);
+    this.accessToken = this.refs.githubToken.value;
+    saveToken(this.accessToken);
     this.setState({ hasToken: true });
-    this.facade = new Facade(token);
+    this.facade = new Facade(this.accessToken);
     this.getRepositories();
   }
 
