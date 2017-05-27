@@ -1,6 +1,10 @@
-.App .repos {
+.App .repos.visible {
   display: flex;
   flex-direction: row;
+}
+
+.App .repos.hidden {
+  display: none;
 }
 
 .App .repo-list {
