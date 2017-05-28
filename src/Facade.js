@@ -21,10 +21,22 @@ export default class Facade {
   }
 
   loadRepositories() {
-    return this.database.allDocs({include_docs: true})
+    return this.database.createIndex({
+      index: {
+        fields: ['type']
+      }
+    })
+    .then(() => {
+      return this.database.find({
+        selector: {
+          type: 'repository'
+        },
+        fields: ['title']
+      });
+    })
     .then(resultSet => {
-      if (resultSet.total_rows > 0) {
-        return Promise.resolve(resultSet.rows.map(row => row.doc));
+      if (resultSet.docs.length > 0) {
+        return Promise.resolve(resultSet.docs);
       } else {
         return this.apolloClient.query({
           query: gql(getRepositoriesQuery)
