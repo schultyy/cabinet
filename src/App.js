@@ -63,7 +63,7 @@ class App extends Component {
     this.facade.loadIssuesForRepository(repository.name)
     .then(resultSet => {
       this.setState({
-        issues: resultSet.data.viewer.repository.issues.nodes
+        issues: resultSet
       });
     });
   }

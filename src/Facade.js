@@ -17,6 +17,7 @@ export default class Facade {
     });
 
     this.database = new PouchDB('offline-issues');
+    PouchDB.plugin(require('pouchdb-find'));
   }
 
   loadRepositories() {
@@ -40,16 +41,58 @@ export default class Facade {
       return this.database.put({
         _id: repository.id,
         name: repository.name,
-        createdAt: repository.createdAt
+        createdAt: repository.createdAt,
+        type: "repository"
       });
     }))
     .then(() => this.database.allDocs({include_docs: true}))
     .then((resultSet) => resultSet.rows.map(row => row.doc));
   }
 
-  loadIssuesForRepository(repositoryName) {
+  fetchFromGitHub(repositoryName) {
     return this.apolloClient.query({
       query: gql(getIssuesForRepositoryQuery(repositoryName))
+    })
+    .then((resultSet) => {
+      const issues = resultSet.data.viewer.repository.issues.nodes;
+      return this.storeIssues(repositoryName, issues);
     });
+  }
+
+  loadIssuesForRepository(repositoryName) {
+    return this.database.createIndex({
+      index: {
+        fields: ['type', 'repository']
+      }
+    })
+    .then(() => {
+      return this.database.find({
+        selector: {
+          type: 'issue',
+          repository: repositoryName
+        },
+        fields: ['number', 'title']
+      });
+    })
+    .then(results => {
+      if(results.docs.length > 0) {
+        return results.docs;
+      } else {
+        return this.fetchFromGitHub(repositoryName);
+      }
+    });
+  }
+
+  storeIssues(repositoryName, issues) {
+    return Promise.all(issues.map(issue => {
+      return this.database.put({
+        _id: issue.id,
+        title: issue.title,
+        number: issue.number,
+        repository: repositoryName,
+        type: "issue"
+      });
+    }))
+    .then(() => this.loadIssuesForRepository(repositoryName));
   }
 }
