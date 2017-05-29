@@ -30,8 +30,7 @@ export default class Facade {
       return this.database.find({
         selector: {
           type: 'repository'
-        },
-        fields: ['title']
+        }
       });
     })
     .then(resultSet => {
