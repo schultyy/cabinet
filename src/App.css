@@ -29,6 +29,10 @@
   max-width: 200px;
 }
 
+.App .repo-list .repository.selected {
+  background-color: #84AFFF;
+}
+
 .App .repo-list .repository button {
   border: none;
   background: transparent;

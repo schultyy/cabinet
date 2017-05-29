@@ -83,6 +83,16 @@ class App extends Component {
       reposClassNames = "repos hidden";
     }
 
+    const repositoryClassNames = (r) => {
+      if (!r || !this.state.selectedRepository) {
+        return 'repository';
+      }
+      if (r._id === this.state.selectedRepository._id) {
+        return 'repository selected';
+      }
+      return 'repository';
+    };
+
     const { issues, repositories } = this.state;
 
     return (
@@ -103,7 +113,7 @@ class App extends Component {
           <div className="repo-list">
             <ul>
               {repositories.map(r => (
-                <li key={r._id} className="repository">
+                <li key={r._id} className={repositoryClassNames(r)}>
                   <button onClick={() => this.onSelectRepository(r)}>{r.name}</button>
                 </li>
               ))}
