@@ -64,6 +64,14 @@
 
 .App .repository-issues .issues .issue {
   border: 1px solid #8427A2;
+}
+
+.App .repository-issues .issues .issue button {
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
   padding: 15px;
 }
 
