@@ -82,7 +82,7 @@ export default class Facade {
           type: 'issue',
           repository: repositoryName
         },
-        fields: ['number', 'title']
+        fields: ['number', 'title', '_id']
       });
     })
     .then(results => {

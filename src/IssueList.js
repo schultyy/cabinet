@@ -9,7 +9,7 @@ export default class IssueList extends React.Component {
         {issues.length > 0 ?
           <ul className="issues">
             {issues.map(i => (
-              <li className="issue">
+              <li key={i._id} className="issue">
                 {`${i.number} - ${i.title}`}
               </li>
             ))}
