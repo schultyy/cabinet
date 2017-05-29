@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import IssueList from './IssueList';
+import RepositoryList from './RepositoryList';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
 import './App.css';
@@ -84,16 +85,6 @@ class App extends Component {
       reposClassNames = "repos hidden";
     }
 
-    const repositoryClassNames = (r) => {
-      if (!r || !this.state.selectedRepository) {
-        return 'repository';
-      }
-      if (r._id === this.state.selectedRepository._id) {
-        return 'repository selected';
-      }
-      return 'repository';
-    };
-
     const { issues, repositories } = this.state;
 
     return (
@@ -111,15 +102,11 @@ class App extends Component {
           </div>
         </div>
         <div className={reposClassNames}>
-          <div className="repo-list">
-            <ul>
-              {repositories.map(r => (
-                <li key={r._id} className={repositoryClassNames(r)}>
-                  <button onClick={() => this.onSelectRepository(r)}>{r.name}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <RepositoryList
+            selectedRepository={this.state.selectedRepository}
+            onSelectRepository={this.onSelectRepository.bind(this)}
+            repositories={repositories}
+          />
           <IssueList issues={issues} />
         </div>
       </div>
