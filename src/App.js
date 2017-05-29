@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import IssueList from './IssueList';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
 import './App.css';
@@ -119,17 +120,7 @@ class App extends Component {
               ))}
             </ul>
           </div>
-          <div className="repository-issues">
-            {issues.length > 0 ?
-              <ul className="issues">
-                {issues.map(i => (
-                  <li className="issue">
-                    {`${i.number} - ${i.title}`}
-                  </li>
-                ))}
-              </ul>
-            : null }
-          </div>
+          <IssueList issues={issues} />
         </div>
       </div>
     );
