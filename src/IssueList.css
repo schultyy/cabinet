@@ -29,3 +29,24 @@
 .issue .body {
   color: #757575;
 }
+
+.issue-state {
+  border: 0.5px solid gray;
+  border-radius: 2px;
+  padding: 2px;
+  margin-right: 5px;
+  width: 60px;
+  text-align: center;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.issue-state.closed {
+  background-color: #F44336;
+  color: #FFFFFF;
+}
+
+.issue-state.open {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}

@@ -101,6 +101,7 @@ export default class Facade {
         number: issue.number,
         repository: repositoryName,
         body: issue.body,
+        state: issue.state,
         type: "issue"
       });
     }))

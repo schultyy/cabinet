@@ -19,7 +19,8 @@ export const getIssuesForRepositoryQuery = (repository) => {
             id,
             number,
             title,
-            body
+            body,
+            state
           }
         }
       }

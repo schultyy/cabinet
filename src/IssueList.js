@@ -29,6 +29,11 @@ export default class IssueList extends React.Component {
       return null;
     };
 
+    const issueStateClassname = (issue) => {
+      const state = issue.state.toLowerCase();
+      return `issue-state ${state}`;
+    };
+
     return (
       <div className="issues list">
         {issues.length > 0 ?
@@ -39,7 +44,8 @@ export default class IssueList extends React.Component {
                   className={issueClassNames(i)}
                   onClick={this.onIssueClick.bind(this, i)}
                 >
-                  {`${i.number} - ${i.title}`}
+                  <span className={issueStateClassname(i)}>{i.state}</span>
+                  <span>{`${i.number} - ${i.title}`}</span>
                 </button>
                 { expandedIssue && (i._id === expandedIssue._id) ?
                     <ReactMarkdown className="body" source={i.body} />
