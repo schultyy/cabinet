@@ -9,7 +9,8 @@
     "pouchdb": "^6.2.0",
     "pouchdb-find": "^6.2.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-markdown": "^2.5.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.6"

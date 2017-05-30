@@ -66,13 +66,34 @@
   border: 1px solid #8427A2;
 }
 
-.App .repository-issues .issues .issue button {
+.App .repository-issues .issues .issue .issue-caption {
   background: transparent;
   border: none;
   width: 100%;
   height: 100%;
   margin: 0px;
   padding: 15px;
+}
+
+.App .repository-issues .issues .issue .issue-caption.selected {
+  font-weight: bolder;
+}
+
+.App .repository-issues .issues .issue .issue-body {
+  white-space: pre;
+  word-wrap: break-word;
+  display: block;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.App .repository-issues .issues .issue .issue-body pre {
+  overflow: scroll;
+  display: inline;
+}
+
+.App .repository-issues .issues .issue .issue-body h1 {
+  font-size: 16px;
 }
 
 .App .configuration.visible {
