@@ -1,111 +1,29 @@
-.App .repos.visible {
-  display: flex;
-  flex-direction: row;
-}
-
-.App .repos.hidden {
-  display: none;
-}
-
-.App .repo-list {
+.App {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  align-items: center;
+  margin: auto 10px;
 }
 
-.App .repo-list ul {
-  list-style-type: none;
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.App .repo-list h3 {
-  padding-left: 5px;
-}
-
-.App .repo-list .repository {
-  padding: 5px;
-  font-size: 15px;
-  border: 1px solid #8427A2;
-  border-radius: 2px;
-  max-width: 200px;
-}
-
-.App .repo-list .repository.selected {
-  background-color: #84AFFF;
-}
-
-.App .repo-list .repository button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: black;
+.configuration h3 {
   width: 100%;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
+  text-align: center;
 }
 
-.App .repo-list .repository:hover {
-  background-color: #847FFF;
-  cursor: pointer;
-}
-
-.App .repository-issues {
-  margin-left: 15px;
+.controls input[type="text"] {
   width: 100%;
+  margin: 5px;
+  font-size: 20px;
 }
 
-.App .repository-issues .issues {
-  list-style-type: none;
-  border: 1px solid #8427A2;
-  border-radius: 2px;
-  margin-left: 15px;
-  padding: 0px;
-}
-
-.App .repository-issues .issues .issue {
-  border: 1px solid #8427A2;
-}
-
-.App .repository-issues .issues .issue .issue-caption {
-  background: transparent;
-  border: none;
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 15px;
-}
-
-.App .repository-issues .issues .issue .issue-caption.selected {
-  font-weight: bolder;
-}
-
-.App .repository-issues .issues .issue .issue-body {
-  white-space: pre;
-  word-wrap: break-word;
-  display: block;
-  overflow: hidden;
-  padding: 5px;
-}
-
-.App .repository-issues .issues .issue .issue-body pre {
-  overflow: scroll;
-  display: inline;
-}
-
-.App .repository-issues .issues .issue .issue-body h1 {
+.controls input[type="button"] {
+  margin: 5px;
   font-size: 16px;
-}
-
-.App .configuration.visible {
-  display: flex;
-  flex-direction: column;
-}
-
-.App .configuration.hidden {
-  display: none;
-}
-
-.App .configuration .controls {
-  display: flex;
-  flex-direction: row;
+  width: 100%;
 }
