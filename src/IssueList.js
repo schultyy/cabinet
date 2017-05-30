@@ -42,7 +42,7 @@ export default class IssueList extends React.Component {
                   {`${i.number} - ${i.title}`}
                 </button>
                 { expandedIssue && (i._id === expandedIssue._id) ?
-                    <ReactMarkdown source={i.body} />
+                    <ReactMarkdown className="body" source={i.body} />
                   : null }
               </li>
             ))}
