@@ -78,11 +78,11 @@ class App extends Component {
 
     if (hasToken) {
       configurationClassNames = "configuration hidden";
-      reposClassNames = "repos visible";
+      reposClassNames = "master-detail visible";
     }
     else {
       configurationClassNames = "configuration visible";
-      reposClassNames = "repos hidden";
+      reposClassNames = "master-detail hidden";
     }
 
     const { issues, repositories } = this.state;
@@ -93,12 +93,12 @@ class App extends Component {
         <div className={configurationClassNames}>
           <h3>Configure your GitHub OAuth token</h3>
           <div className="controls">
-            <input type="text" ref="githubToken" className="githubToken" />
+            <input type="text" ref="githubToken" />
             <input type="button"
                     value="Save Token"
                     onClick={() => this.onSaveToken()}
                     ref="saveGitHubToken"
-                    className="saveToken" />
+            />
           </div>
         </div>
         <div className={reposClassNames}>

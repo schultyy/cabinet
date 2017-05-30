@@ -1,0 +1,9 @@
+.issue button {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+}
+
+.issue button.selected {
+  font-size: 20px;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './RepositoryList.css';
 
 export default class RepositoryList extends React.Component {
 
@@ -18,7 +19,7 @@ export default class RepositoryList extends React.Component {
     const { onSelectRepository, repositories } = this.props;
 
     return (
-      <div className="repo-list">
+      <div className="repositories list">
         <ul>
           {repositories.map(r => (
             <li key={r._id} className={this.repositoryClassNames(r)}>

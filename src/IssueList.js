@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import './IssueList.css';
 
 export default class IssueList extends React.Component {
 
@@ -23,15 +24,15 @@ export default class IssueList extends React.Component {
 
     const issueClassNames = (issue) => {
       if (expandedIssue && (expandedIssue._id === issue._id)) {
-        return 'issue-caption selected';
+        return 'selected';
       }
-      return 'issue-caption';
+      return null;
     };
 
     return (
-      <div className="repository-issues">
+      <div className="list">
         {issues.length > 0 ?
-          <ul className="issues">
+          <ul>
             {issues.map(i => (
               <li key={i._id} className="issue">
                 <button
@@ -41,7 +42,7 @@ export default class IssueList extends React.Component {
                   {`${i.number} - ${i.title}`}
                 </button>
                 { expandedIssue && (i._id === expandedIssue._id) ?
-                    <ReactMarkdown className="issue-body" source={i.body} />
+                    <ReactMarkdown source={i.body} />
                   : null }
               </li>
             ))}
