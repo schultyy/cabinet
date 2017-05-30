@@ -30,7 +30,7 @@ export default class IssueList extends React.Component {
     };
 
     return (
-      <div className="list">
+      <div className="issues list">
         {issues.length > 0 ?
           <ul>
             {issues.map(i => (

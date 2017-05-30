@@ -36,8 +36,15 @@
   width: 100%;
 }
 
-.list ul {
+.list > ul {
   list-style-type: none;
+  padding-left: 0px;
+  border-radius: 2px;
+}
+
+.list > ul > li {
+  border: 0.5px solid #757575;
+  padding: 5px;
 }
 
 .master-detail {

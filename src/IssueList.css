@@ -1,9 +1,22 @@
+.issues {
+  margin-left: 60px;
+  width: 100%;
+}
+
 .issue button {
   border: none;
   background: transparent;
   font-size: 16px;
+  width: 100%;
+  text-align: left;
+}
+
+.issue button:focus {
+  outline: 0;
 }
 
 .issue button.selected {
   font-size: 20px;
+  padding: 5px;
+  text-decoration: underline;
 }
