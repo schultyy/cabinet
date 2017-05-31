@@ -86,7 +86,14 @@ export default class Facade {
     })
     .then(results => {
       if(results.docs.length > 0) {
-        return results.docs;
+        return results.docs.sort((a, b) => {
+          if (a.state > b.state) {
+            return -1;
+          } else if (a.state < b.state) {
+            return 1;
+          }
+          return 0;
+        });
       } else {
         return this.fetchFromGitHub(repositoryName);
       }
