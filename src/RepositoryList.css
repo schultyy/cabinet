@@ -7,8 +7,14 @@
   background: transparent;
   font-size: 16px;
   color: #212121;
+  outline: 0;
 }
 
 .repository button:hover {
   text-decoration: underline;
+  outline: 0;
+}
+
+.repository button:focus {
+  outline: 0;
 }
