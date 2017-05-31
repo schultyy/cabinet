@@ -9,4 +9,12 @@ cache:
 before_install:
   - npm config set spin false
 install: yarn install
-script: yarn run build
+
+jobs:
+  include:
+    - stage: build
+      script: yarn run build
+    - stage: deploy
+      script: yarn run deploy
+      on:
+        branch: master
