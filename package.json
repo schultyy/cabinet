@@ -1,8 +1,8 @@
 {
-  "name": "tidenhub",
+  "name": "issue-trecker",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://schultyy.github.io/tidenhub",
+  "homepage": "https://schultyy.github.io/issue-trecker",
   "dependencies": {
     "apollo-client": "^1.2.2",
     "graphql-tag": "^2.1.0",
