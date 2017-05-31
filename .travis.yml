@@ -5,8 +5,15 @@ sudo: false
 cache:
   directories:
     - "$HOME/.npm"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
 before_install:
-  - npm config set spin false
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.8; fi
 install: yarn install
 
 jobs:
