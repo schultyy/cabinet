@@ -17,4 +17,4 @@ env:
 install: yarn install
 script: yarn run build
 after_success:
-  - test $TRAVIS_BRANCH = "master" && yarn run deploy
+  - ./deploy.sh
