@@ -15,12 +15,10 @@ addons:
 env:
   - CXX=g++-4.8
 install: yarn install
-
-jobs:
-  include:
-    - stage: build
-      script: yarn run build
-    - stage: deploy
-      script: yarn run deploy
-      on:
-        branch: master
+script: yarn run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
