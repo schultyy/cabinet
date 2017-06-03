@@ -9,7 +9,8 @@ export default class IssueList extends React.Component {
     super();
 
     this.state = {
-      expandedIssue: null
+      expandedIssue: null,
+      showClosedIssues: false
     };
   }
 
@@ -50,12 +51,38 @@ export default class IssueList extends React.Component {
     );
   }
 
-  render() {
+  hideClosedIssues() {
+    this.setState({
+      showClosedIssues: false
+    });
+  }
+
+  showClosedIssues() {
+    this.setState({
+      showClosedIssues: true
+    });
+  }
+
+  filterIssues() {
+    const { showClosedIssues } = this.state;
     const { issues } = this.props;
+
+    if (showClosedIssues === true) {
+      return issues;
+    }
+
+    return issues.filter(i => i.state !== 'CLOSED');
+  }
+
+  render() {
+    const issues = this.filterIssues();
 
     return (
       <div className="issues list">
-        <IssueMenu />
+        <IssueMenu
+          onHideClosedIssues={this.hideClosedIssues.bind(this)}
+          onShowClosedIssues={this.showClosedIssues.bind(this)}
+        />
         {issues.length > 0 ?
           <ul>
             {issues.map(i => this.renderIssue(i))}

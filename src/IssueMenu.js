@@ -14,12 +14,14 @@ export default class IssueMenu extends React.Component {
     this.setState({
       showClosedIssues: false
     });
+    this.props.onHideClosedIssues();
   }
 
   onShowClosedButtonClick() {
     this.setState({
       showClosedIssues: true
     });
+    this.props.onShowClosedIssues();
   }
 
   render() {
@@ -27,8 +29,16 @@ export default class IssueMenu extends React.Component {
 
     return (
       <div className="menu">
-        { showClosedIssues  ? <button onClick={this.onHideClosedButtonClick.bind(this)}>Hide closed issues</button> : null }
-        { !showClosedIssues ? <button onClick={this.onShowClosedButtonClick.bind(this)}>Show closed issues</button> : null }
+        { showClosedIssues ?
+          <button onClick={this.onHideClosedButtonClick.bind(this)}>
+            Hide closed issues
+          </button>
+        : null }
+        { !showClosedIssues ?
+          <button onClick={this.onShowClosedButtonClick.bind(this)}>
+            Show closed issues
+          </button>
+        : null }
       </div>
     );
   }
