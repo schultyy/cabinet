@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import IssueDetail from './IssueDetail';
 import IssueMenu from './IssueMenu';
 import './IssueList.css';
 
@@ -18,37 +18,6 @@ export default class IssueList extends React.Component {
     this.setState({
       expandedIssue: clickedIssue
     });
-  }
-
-  renderIssue(issue) {
-    const { expandedIssue } = this.state;
-
-    const issueClassNames = (issue) => {
-      if (expandedIssue && (expandedIssue._id === issue._id)) {
-        return 'selected';
-      }
-      return null;
-    };
-
-    const issueStateClassname = (issue) => {
-      const state = issue.state.toLowerCase();
-      return `issue-state ${state}`;
-    };
-
-    return (
-      <li key={issue._id} className="issue">
-        <button
-          className={issueClassNames(issue)}
-          onClick={this.onIssueClick.bind(this, issue)}
-        >
-          <span className={issueStateClassname(issue)}>{issue.state}</span>
-          <span>{`${issue.number} - ${issue.title}`}</span>
-        </button>
-        { expandedIssue && (issue._id === expandedIssue._id) ?
-            <ReactMarkdown className="body" source={issue.body} />
-          : null }
-      </li>
-    );
   }
 
   hideClosedIssues() {
@@ -79,6 +48,12 @@ export default class IssueList extends React.Component {
 
     const renderIssues = issues.length > 0;
 
+    const { expandedIssue } = this.state;
+
+    const isExpanded = (otherIssue) => {
+      return (expandedIssue && (expandedIssue._id === otherIssue._id));
+    };
+
     if (!renderIssues) {
       return (
         <div className="issues list">
@@ -94,7 +69,14 @@ export default class IssueList extends React.Component {
           onShowClosedClick={this.showClosedIssues.bind(this)}
         />
         <ul>
-          {issues.map(i => this.renderIssue(i))}
+          {issues.map(issue => (
+            <IssueDetail
+              key={issue._id}
+              issue={issue}
+              isExpanded={isExpanded(issue)}
+              onIssueClick={this.onIssueClick.bind(this)}
+            />
+          ))}
         </ul>
       </div>
     );
