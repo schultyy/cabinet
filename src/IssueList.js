@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import IssueMenu from './IssueMenu';
 import './IssueList.css';
 
 export default class IssueList extends React.Component {
@@ -36,6 +37,7 @@ export default class IssueList extends React.Component {
 
     return (
       <div className="issues list">
+        <IssueMenu />
         {issues.length > 0 ?
           <ul>
             {issues.map(i => (
