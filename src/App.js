@@ -89,7 +89,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>GitHub Offline Issues</h1>
+        <h1>GitHub Issue 🚜</h1>
         <div className={configurationClassNames}>
           <h3>Configure your GitHub OAuth token</h3>
           <div className="controls">
