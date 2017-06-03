@@ -19,8 +19,7 @@ export default class IssueList extends React.Component {
     });
   }
 
-  render() {
-    const { issues } = this.props;
+  renderIssue(issue) {
     const { expandedIssue } = this.state;
 
     const issueClassNames = (issue) => {
@@ -36,24 +35,30 @@ export default class IssueList extends React.Component {
     };
 
     return (
+      <li key={issue._id} className="issue">
+        <button
+          className={issueClassNames(issue)}
+          onClick={this.onIssueClick.bind(this, issue)}
+        >
+          <span className={issueStateClassname(issue)}>{issue.state}</span>
+          <span>{`${issue.number} - ${issue.title}`}</span>
+        </button>
+        { expandedIssue && (issue._id === expandedIssue._id) ?
+            <ReactMarkdown className="body" source={issue.body} />
+          : null }
+      </li>
+    );
+  }
+
+  render() {
+    const { issues } = this.props;
+
+    return (
       <div className="issues list">
         <IssueMenu />
         {issues.length > 0 ?
           <ul>
-            {issues.map(i => (
-              <li key={i._id} className="issue">
-                <button
-                  className={issueClassNames(i)}
-                  onClick={this.onIssueClick.bind(this, i)}
-                >
-                  <span className={issueStateClassname(i)}>{i.state}</span>
-                  <span>{`${i.number} - ${i.title}`}</span>
-                </button>
-                { expandedIssue && (i._id === expandedIssue._id) ?
-                    <ReactMarkdown className="body" source={i.body} />
-                  : null }
-              </li>
-            ))}
+            {issues.map(i => this.renderIssue(i))}
           </ul>
         : null }
       </div>
