@@ -19,6 +19,10 @@
   height: 25px;
 }
 
+.menu button i {
+  margin-right: 5px;
+}
+
 .menu button:hover {
   background-color: gray;
   cursor: pointer;

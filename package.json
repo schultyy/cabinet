@@ -5,6 +5,7 @@
   "homepage": "https://schultyy.github.io/issue-trecker",
   "dependencies": {
     "apollo-client": "^1.2.2",
+    "font-awesome": "^4.7.0",
     "graphql-tag": "^2.1.0",
     "pouchdb": "^6.2.0",
     "pouchdb-find": "^6.2.0",

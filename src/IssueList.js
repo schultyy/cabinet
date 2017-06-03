@@ -77,17 +77,24 @@ export default class IssueList extends React.Component {
   render() {
     const issues = this.filterIssues();
 
+    const renderIssues = issues.length > 0;
+
+    if (!renderIssues) {
+      return (
+        <div className="issues list">
+        </div>
+      );
+    }
+
     return (
       <div className="issues list">
         <IssueMenu
           onHideClosedIssues={this.hideClosedIssues.bind(this)}
           onShowClosedIssues={this.showClosedIssues.bind(this)}
         />
-        {issues.length > 0 ?
-          <ul>
-            {issues.map(i => this.renderIssue(i))}
-          </ul>
-        : null }
+        <ul>
+          {issues.map(i => this.renderIssue(i))}
+        </ul>
       </div>
     );
   }
