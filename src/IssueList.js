@@ -89,8 +89,9 @@ export default class IssueList extends React.Component {
     return (
       <div className="issues list">
         <IssueMenu
-          onHideClosedIssues={this.hideClosedIssues.bind(this)}
-          onShowClosedIssues={this.showClosedIssues.bind(this)}
+          showClosedIssues={this.state.showClosedIssues}
+          onHideClosedClick={this.hideClosedIssues.bind(this)}
+          onShowClosedClick={this.showClosedIssues.bind(this)}
         />
         <ul>
           {issues.map(i => this.renderIssue(i))}
