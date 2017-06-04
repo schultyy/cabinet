@@ -79,7 +79,7 @@ export default class Facade {
     .then((resultSet) => {
       if (resultSet.data.viewer.repository) {
         const issues = resultSet.data.viewer.repository.issues.nodes;
-        return this.storeIssues(repository.nameWithOwner, issues);
+        return this.storeIssues(repository, issues);
       }
       return Promise.resolve([]);
     });
@@ -95,7 +95,7 @@ export default class Facade {
       return this.database.find({
         selector: {
           type: 'issue',
-          repository: repository.nameWithOwner
+          repository: repository._id
         },
       });
     })
@@ -115,13 +115,13 @@ export default class Facade {
     });
   }
 
-  storeIssues(repositoryName, issues) {
+  storeIssues(repository, issues) {
     return Promise.all(issues.map(issue => {
       return this.database.put({
         _id: issue.id,
         title: issue.title,
         number: issue.number,
-        repository: repositoryName,
+        repository: repository._id,
         body: issue.body,
         state: issue.state,
         assignees: this._filterAssignees(issue),
@@ -131,7 +131,7 @@ export default class Facade {
         type: "issue"
       });
     }))
-    .then(() => this.loadIssuesForRepository(repositoryName));
+    .then(() => this._convertIssues(issues));
   }
 
   _getMilestone(issue) {
@@ -147,5 +147,14 @@ export default class Facade {
     }
 
     return issue.assignees.nodes;
+  }
+
+  _convertIssues(issues) {
+    return issues.map(issue => {
+      if (issue._id) {
+        return issue;
+      }
+      return Object.assign({}, issue, {_id: issue.id});
+    });
   }
 }
