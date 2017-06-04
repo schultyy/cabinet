@@ -35,6 +35,15 @@ export default class Facade {
     })
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
+        resultSet.docs.sort((a,b) => {
+          if(a.createdAt > b.createdAt) {
+            return -1;
+          }
+          else if(a.createdAt < b.createdAt) {
+            return 1;
+          }
+          return 0;
+        });
         return Promise.resolve(resultSet.docs);
       } else {
         return this.apolloClient.query({
