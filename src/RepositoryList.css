@@ -17,6 +17,10 @@
   outline: 0;
 }
 
+.repository.selected {
+  background-color: #FF5722;
+}
+
 .repository button:hover {
   text-decoration: underline;
   outline: 0;
