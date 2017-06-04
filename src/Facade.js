@@ -65,8 +65,11 @@ export default class Facade {
       query: gql(getIssuesForRepositoryQuery(repositoryName))
     })
     .then((resultSet) => {
-      const issues = resultSet.data.viewer.repository.issues.nodes;
-      return this.storeIssues(repositoryName, issues);
+      if (resultSet.data.viewer.repository) {
+        const issues = resultSet.data.viewer.repository.issues.nodes;
+        return this.storeIssues(repositoryName, issues);
+      }
+      return Promise.resolve([]);
     });
   }
 
