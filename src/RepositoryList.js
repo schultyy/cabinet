@@ -26,12 +26,6 @@ export default class RepositoryList extends React.Component {
     );
   }
 
-  isFork(repository) {
-    if (repository.isFork) {
-      return "Fork";
-    }
-    return null;
-  }
 
   render() {
     const { onSelectRepository, repositories } = this.props;
@@ -42,8 +36,9 @@ export default class RepositoryList extends React.Component {
           {repositories.map(r => (
             <li key={r._id} className={this.repositoryClassNames(r)}>
               <span>{this.renderRepositoryStatus(r)}</span>
-              <button onClick={() => onSelectRepository(r)}>{r.name}</button>
-              <span className="is-fork">{this.isFork(r)}</span>
+              <button onClick={() => onSelectRepository(r)}>
+                {r.nameWithOwner}
+              </button>
             </li>
           ))}
         </ul>

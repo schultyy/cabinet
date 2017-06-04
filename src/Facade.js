@@ -52,9 +52,9 @@ export default class Facade {
       return this.database.put({
         _id: repository.id,
         name: repository.name,
+        nameWithOwner: repository.nameWithOwner,
         createdAt: repository.createdAt,
         isPrivate: repository.isPrivate,
-        isFork: repository.isFork,
         hasIssuesEnabled: repository.hasIssuesEnabled,
         type: "repository"
       });
@@ -63,20 +63,20 @@ export default class Facade {
     .then((resultSet) => resultSet.rows.map(row => row.doc));
   }
 
-  fetchFromGitHub(repositoryName) {
+  fetchFromGitHub(repository) {
     return this.apolloClient.query({
-      query: gql(getIssuesForRepositoryQuery(repositoryName))
+      query: gql(getIssuesForRepositoryQuery(repository.name))
     })
     .then((resultSet) => {
       if (resultSet.data.viewer.repository) {
         const issues = resultSet.data.viewer.repository.issues.nodes;
-        return this.storeIssues(repositoryName, issues);
+        return this.storeIssues(repository.nameWithOwner, issues);
       }
       return Promise.resolve([]);
     });
   }
 
-  loadIssuesForRepository(repositoryName) {
+  loadIssuesForRepository(repository) {
     return this.database.createIndex({
       index: {
         fields: ['type', 'repository']
@@ -86,7 +86,7 @@ export default class Facade {
       return this.database.find({
         selector: {
           type: 'issue',
-          repository: repositoryName
+          repository: repository.nameWithOwner
         },
       });
     })
@@ -101,7 +101,7 @@ export default class Facade {
           return 0;
         });
       } else {
-        return this.fetchFromGitHub(repositoryName);
+        return this.fetchFromGitHub(repository);
       }
     });
   }

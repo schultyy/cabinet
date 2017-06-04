@@ -1,12 +1,12 @@
 export const getRepositoriesQuery = `query getRepos {
   viewer {
-    repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
+    repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}, isFork: false) {
       nodes{
         id,
         name,
+        nameWithOwner,
         createdAt,
         hasIssuesEnabled,
-        isFork,
         isPrivate
       }
     }

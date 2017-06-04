@@ -9,6 +9,11 @@
   justify-content: flex-start;
 }
 
+.repository {
+  display: flex;
+  flex-direction: row;
+}
+
 .repository button {
   border: none;
   background: transparent;
@@ -28,4 +33,8 @@
 
 .repository button:focus {
   outline: 0;
+}
+
+.repository .fa {
+  width: 15px;
 }
