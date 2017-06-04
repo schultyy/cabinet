@@ -69,7 +69,7 @@ export default class IssueDetail extends React.Component {
           onClick={() => onIssueClick(issue)}
         >
           <span className={this.issueStateClassname(issue)}>{issue.state}</span>
-          <span>{`${issue.number} - ${issue.title}`}</span>
+          <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
         </button>
         { this.renderIssueDetails() }
       </li>

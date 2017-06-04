@@ -7,6 +7,12 @@
   text-align: left;
 }
 
+.issue .number {
+  color: #757575;
+  width: 50px;
+  display: inline-block;
+}
+
 .issue button:focus {
   outline: 0;
 }
