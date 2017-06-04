@@ -21,6 +21,12 @@ export const getIssuesForRepositoryQuery = (repository) => {
             title,
             body,
             state,
+            createdAt,
+            author {
+              avatarUrl
+              login
+              url
+            },
             milestone {
               number,
               title,

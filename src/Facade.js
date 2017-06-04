@@ -114,6 +114,8 @@ export default class Facade {
         state: issue.state,
         assignees: this._filterAssignees(issue),
         milestone: this._getMilestone(issue),
+        createdAt: issue.createdAt,
+        author: issue.author,
         type: "issue"
       });
     }))
