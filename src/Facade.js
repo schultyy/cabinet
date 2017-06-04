@@ -113,10 +113,18 @@ export default class Facade {
         body: issue.body,
         state: issue.state,
         assignees: this._filterAssignees(issue),
+        milestone: this._getMilestone(issue),
         type: "issue"
       });
     }))
     .then(() => this.loadIssuesForRepository(repositoryName));
+  }
+
+  _getMilestone(issue) {
+    if (issue.milestone) {
+      return issue.milestone.title;
+    }
+    return null;
   }
 
   _filterAssignees(issue) {

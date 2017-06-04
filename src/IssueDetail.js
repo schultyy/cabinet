@@ -16,11 +16,25 @@ export default class IssueDetail extends React.Component {
 
   renderIssueDetails() {
     const { issue } = this.props;
-    const { assignees } = issue;
+
+    const assignees = () => {
+      if (issue.assignees.length === 0) {
+        return 'None';
+      }
+      return issue.assignees.map(assignee => assignee.login).join(", ");
+    };
+
+    const milestone = () => {
+      if (issue.milestone) {
+        return issue.milestone;
+      }
+      return 'None';
+    };
 
     return (
       <div>
-        <span><strong>Assignees: </strong>{assignees.map(assignee => assignee.login).join(", ")}</span>
+        <div><strong>Assignees: </strong>{assignees()}</div>
+        <div><strong>Milestone: </strong>{milestone()}</div>
         <ReactMarkdown className="body" source={issue.body} />
       </div>
     );
