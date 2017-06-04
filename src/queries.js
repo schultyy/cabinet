@@ -20,7 +20,25 @@ export const getIssuesForRepositoryQuery = (repository) => {
             number,
             title,
             body,
-            state
+            state,
+            milestone {
+              number,
+              title,
+              state
+            }
+            assignees(first: 10){
+              nodes{
+                login,
+                avatarUrl
+              }
+            },
+            labels(first: 20) {
+              nodes {
+                color
+                id
+                name
+              }
+            }
           }
         }
       }
