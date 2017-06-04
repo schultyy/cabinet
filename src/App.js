@@ -39,16 +39,6 @@ class App extends Component {
     }
   }
 
-  getIssues() {
-    return [
-      "Delete images when post gets deleted",
-      "Admin should be able to delete other people's posts",
-      "Render loading indicators",
-      "Fix styles for user details",
-      "ALlow users to post comments"
-    ];
-  }
-
   onSaveToken() {
     this.accessToken = this.refs.githubToken.value;
     saveToken(this.accessToken);
