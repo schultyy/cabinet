@@ -15,6 +15,17 @@ export default class RepositoryList extends React.Component {
     return 'repository';
   }
 
+  renderRepositoryStatus(repository) {
+    if (repository.isPrivate) {
+      return (
+        <i className="fa fa-unlock-alt" aria-hidden="true"></i>
+      );
+    }
+    return (
+      <i className="fa fa-book" aria-hidden="true"></i>
+    );
+  }
+
   render() {
     const { onSelectRepository, repositories } = this.props;
 
@@ -23,6 +34,7 @@ export default class RepositoryList extends React.Component {
         <ul>
           {repositories.map(r => (
             <li key={r._id} className={this.repositoryClassNames(r)}>
+              <span>{this.renderRepositoryStatus(r)}</span>
               <button onClick={() => onSelectRepository(r)}>{r.name}</button>
             </li>
           ))}

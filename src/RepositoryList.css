@@ -3,6 +3,12 @@
   margin-top: 0px;
 }
 
+.repositories ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
 .repository button {
   border: none;
   background: transparent;
