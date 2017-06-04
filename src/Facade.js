@@ -53,6 +53,9 @@ export default class Facade {
         _id: repository.id,
         name: repository.name,
         createdAt: repository.createdAt,
+        isPrivate: repository.isPrivate,
+        isFork: repository.isFork,
+        hasIssuesEnabled: repository.hasIssuesEnabled,
         type: "repository"
       });
     }))
