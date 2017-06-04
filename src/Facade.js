@@ -109,9 +109,18 @@ export default class Facade {
         repository: repositoryName,
         body: issue.body,
         state: issue.state,
+        assignees: this._filterAssignees(issue),
         type: "issue"
       });
     }))
     .then(() => this.loadIssuesForRepository(repositoryName));
+  }
+
+  _filterAssignees(issue) {
+    if(!issue.assignees.nodes) {
+      return [];
+    }
+
+    return issue.assignees.nodes;
   }
 }

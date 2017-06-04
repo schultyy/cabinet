@@ -14,6 +14,18 @@ export default class IssueDetail extends React.Component {
     return `issue-state ${state}`;
   }
 
+  renderIssueDetails() {
+    const { issue } = this.props;
+    const { assignees } = issue;
+
+    return (
+      <div>
+        <span><strong>Assignees: </strong>{assignees.map(assignee => assignee.login).join(", ")}</span>
+        <ReactMarkdown className="body" source={issue.body} />
+      </div>
+    );
+  }
+
   render() {
     const { issue, isExpanded, onIssueClick } = this.props;
 
@@ -27,7 +39,7 @@ export default class IssueDetail extends React.Component {
           <span>{`${issue.number} - ${issue.title}`}</span>
         </button>
         { isExpanded ?
-            <ReactMarkdown className="body" source={issue.body} />
+          this.renderIssueDetails()
           : null }
       </li>
     );
