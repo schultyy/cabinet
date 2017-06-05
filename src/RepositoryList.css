@@ -1,3 +1,9 @@
+.repositories {
+  height: 700px;
+  width: 400px;
+  overflow-y: scroll;
+}
+
 .repositories ul {
   padding-left: 0px;
   margin-top: 0px;
