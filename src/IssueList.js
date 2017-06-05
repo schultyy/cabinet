@@ -69,6 +69,13 @@ export default class IssueList extends React.Component {
       );
     }
 
+    const issueClassname = (issue) => {
+      if (isExpanded(issue)) {
+        return 'selected';
+      }
+      return null;
+    };
+
     const issueStateClassname = (issue) => {
       const state = issue.state.toLowerCase();
       return `issue-state ${state}`;
@@ -85,6 +92,7 @@ export default class IssueList extends React.Component {
           {issues.map(issue => (
             <li key={issue._id} className="issue">
               <button
+                className={issueClassname(issue)}
                 onClick={() => this.onIssueClick(issue)}
               >
                 <span className={issueStateClassname(issue)}>{issue.state}</span>
