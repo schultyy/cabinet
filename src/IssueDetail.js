@@ -13,7 +13,7 @@ export default class IssueDetail extends React.Component {
     const { issue } = this.props;
 
     const assignees = () => {
-      if (issue.assignees.length === 0) {
+      if (issue.assignees && issue.assignees.length === 0) {
         return 'None';
       }
       return issue.assignees.map(assignee => assignee.login).join(", ");
