@@ -27,7 +27,7 @@ export default class IssueDetail extends React.Component {
     };
 
     return (
-      <div className="details">
+      <div className="issue-details">
         <div className="author">
           <img src={issue.author.avatarUrl} alt={issue.author.login} />
         </div>
