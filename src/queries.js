@@ -25,6 +25,18 @@ export const getIssuesForRepositoryQuery = (repository) => {
             body,
             state,
             createdAt,
+            comments(first: 100) {
+              nodes {
+                author {
+                  avatarUrl,
+                  login,
+                  url
+                },
+                body,
+                createdAt,
+                id
+              }
+            },
             author {
               avatarUrl
               login

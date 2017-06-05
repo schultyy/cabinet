@@ -6,16 +6,27 @@
 
 .issue-details {
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.issue-details .milestone-assignee {
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+
+.issue-details .milestone-assignee span {
+  margin-right: 15px;
 }
 
 .issue-details .author {
   display: flex;
   flex-direction: column;
+  margin-bottom: 5px;
 }
 
-.issue-details .author img {
+.author img {
   margin-right: 10px;
   border-radius: 2px;
   width: 65px;
@@ -46,4 +57,9 @@
 
 .meta {
   margin-bottom: 10px;
+}
+
+.comments ul {
+  list-style-type: none;
+  padding-left: 0px;
 }

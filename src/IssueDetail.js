@@ -9,6 +9,48 @@ export default class IssueDetail extends React.Component {
     return `issue-state ${state}`;
   }
 
+  renderComments() {
+    const { issue } = this.props;
+
+    return (
+      <div className="comments">
+        <ul>
+          {issue.comments.map(comment => {
+            return (
+              <li key={comment.id}>
+                {this.renderIssueEntry(comment)}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+
+  //This can be a comment or the original issue text
+  //But since they all consist of the same data in the end it makes sense
+  //to consolidate the code for that
+  renderIssueEntry(issueOrComment) {
+    return (
+      <div>
+        <div className="author">
+          <img src={issueOrComment.author.avatarUrl} alt={issueOrComment.author.login} />
+        </div>
+        <div>
+          <div>
+            <strong>Created by: </strong>
+            {issueOrComment.author.login}
+          </div>
+          <div>
+            <strong>Created at: </strong>
+            <time dateTime={issueOrComment.createdAt}>{moment(issueOrComment.createdAt).format('MMMM Do YYYY, h:mm a')}</time>
+          </div>
+          <ReactMarkdown className="body" source={issueOrComment.body} />
+        </div>
+      </div>
+    );
+  }
+
   renderIssueDetails() {
     const { issue } = this.props;
 
@@ -28,21 +70,13 @@ export default class IssueDetail extends React.Component {
 
     return (
       <div className="issue-details">
-        <div className="author">
-          <img src={issue.author.avatarUrl} alt={issue.author.login} />
+        <div className="milestone-assignee">
+          <span><strong>Assignees: </strong>{assignees()}</span>
+          <span><strong>Milestone: </strong>{milestone()}</span>
         </div>
-        <div>
-          <div>
-            <strong>Created by: </strong>
-            {issue.author.login}
-          </div>
-          <div>
-            <strong>Created at: </strong>
-            <time dateTime={issue.createdAt}>{moment(issue.createdAt).format('MMMM Do YYYY, h:mm a')}</time>
-          </div>
-          <div><strong>Assignees: </strong>{assignees()}</div>
-          <div><strong>Milestone: </strong>{milestone()}</div>
-          <ReactMarkdown className="body" source={issue.body} />
+        {this.renderIssueEntry(issue)}
+        <div className="comments">
+          {this.renderComments()}
         </div>
       </div>
     );

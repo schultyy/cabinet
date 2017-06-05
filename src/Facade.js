@@ -133,10 +133,15 @@ export default class Facade {
         milestone: this._getMilestone(issue),
         createdAt: issue.createdAt,
         author: issue.author,
+        comments: this._mapComments(issue),
         type: "issue"
       });
     }))
     .then(() => this._convertIssues(issues));
+  }
+
+  _mapComments(issue) {
+    return issue.comments.nodes;
   }
 
   _getMilestone(issue) {
