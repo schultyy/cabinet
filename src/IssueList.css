@@ -18,7 +18,7 @@
   text-align: left;
 }
 
-.issue .number {
+.number {
   color: #757575;
   width: 50px;
   display: inline-block;
@@ -29,7 +29,6 @@
 }
 
 .issue button.selected {
-  font-size: 20px;
   padding: 5px;
 }
 
