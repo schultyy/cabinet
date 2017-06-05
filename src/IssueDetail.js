@@ -38,7 +38,7 @@ export default class IssueDetail extends React.Component {
           </div>
           <div>
             <strong>Created at: </strong>
-            <time datetime={issue.createdAt}>{moment(issue.createdAt).format('MMMM Do YYYY, h:mm a')}</time>
+            <time dateTime={issue.createdAt}>{moment(issue.createdAt).format('MMMM Do YYYY, h:mm a')}</time>
           </div>
           <div><strong>Assignees: </strong>{assignees()}</div>
           <div><strong>Milestone: </strong>{milestone()}</div>
