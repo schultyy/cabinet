@@ -2,3 +2,9 @@
   margin-left: 60px;
   width: 100%;
 }
+
+.issues ul {
+  max-height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

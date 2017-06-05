@@ -4,20 +4,13 @@ import moment from 'moment';
 import './IssueDetail.css';
 
 export default class IssueDetail extends React.Component {
-  issueClassNames(issue) {
-    if (this.props.isExpanded) {
-      return 'selected';
-    }
-    return null;
-  }
-
   issueStateClassname(issue) {
     const state = issue.state.toLowerCase();
     return `issue-state ${state}`;
   }
 
   renderIssueDetails() {
-    const { issue, isExpanded } = this.props;
+    const { issue } = this.props;
 
     const assignees = () => {
       if (issue.assignees.length === 0) {
@@ -32,10 +25,6 @@ export default class IssueDetail extends React.Component {
       }
       return 'None';
     };
-
-    if (!isExpanded) {
-      return null;
-    }
 
     return (
       <div className="details">
@@ -60,19 +49,18 @@ export default class IssueDetail extends React.Component {
   }
 
   render() {
-    const { issue, onIssueClick } = this.props;
+    const { issue } = this.props;
+
+    if(!issue) {
+      return null;
+    }
 
     return (
-      <li key={issue._id} className="issue">
-        <button
-          className={this.issueClassNames(issue)}
-          onClick={() => onIssueClick(issue)}
-        >
-          <span className={this.issueStateClassname(issue)}>{issue.state}</span>
-          <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
-        </button>
+      <div>
+        <span className={this.issueStateClassname(issue)}>{issue.state}</span>
+        <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
         { this.renderIssueDetails() }
-      </li>
+      </div>
     );
   }
 }

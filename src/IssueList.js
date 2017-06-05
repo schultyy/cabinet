@@ -14,6 +14,14 @@ export default class IssueList extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.issues !== this.props.issues) {
+      this.setState({
+        expandedIssue: false
+      });
+    }
+  }
+
   onIssueClick(clickedIssue) {
     this.setState({
       expandedIssue: clickedIssue
@@ -61,6 +69,11 @@ export default class IssueList extends React.Component {
       );
     }
 
+    const issueStateClassname = (issue) => {
+      const state = issue.state.toLowerCase();
+      return `issue-state ${state}`;
+    };
+
     return (
       <div className="issues list">
         <IssueMenu
@@ -70,14 +83,17 @@ export default class IssueList extends React.Component {
         />
         <ul>
           {issues.map(issue => (
-            <IssueDetail
-              key={issue._id}
-              issue={issue}
-              isExpanded={isExpanded(issue)}
-              onIssueClick={this.onIssueClick.bind(this)}
-            />
+            <li key={issue._id} className="issue">
+              <button
+                onClick={() => this.onIssueClick(issue)}
+              >
+                <span className={issueStateClassname(issue)}>{issue.state}</span>
+                <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
+              </button>
+            </li>
           ))}
         </ul>
+        <IssueDetail issue={expandedIssue} />
       </div>
     );
   }
