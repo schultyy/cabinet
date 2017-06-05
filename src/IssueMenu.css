@@ -17,6 +17,7 @@
   height: 100%;
   width: 150px;
   height: 25px;
+  white-space: nowrap;
 }
 
 .menu button i {
