@@ -3,6 +3,16 @@ import gql from 'graphql-tag';
 import PouchDB from 'pouchdb';
 import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 
+function repositoryComparator(leftRepo, rightRepo) {
+  if(leftRepo.createdAt > rightRepo.createdAt) {
+    return -1;
+  }
+  else if(leftRepo.createdAt < rightRepo.createdAt) {
+    return 1;
+  }
+  return 0;
+}
+
 export default class Facade {
   constructor(accessToken) {
     this.apolloClient = new ApolloClient({
@@ -35,15 +45,7 @@ export default class Facade {
     })
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
-        resultSet.docs.sort((a,b) => {
-          if(a.createdAt > b.createdAt) {
-            return -1;
-          }
-          else if(a.createdAt < b.createdAt) {
-            return 1;
-          }
-          return 0;
-        });
+        resultSet.docs.sort(repositoryComparator);
         return Promise.resolve(resultSet.docs);
       } else {
         return this.apolloClient.query({
@@ -69,7 +71,10 @@ export default class Facade {
       });
     }))
     .then(() => this.database.allDocs({include_docs: true}))
-    .then((resultSet) => resultSet.rows.map(row => row.doc));
+    .then((resultSet) => resultSet.rows.map(row => row.doc))
+    .then((docs) => {
+      return Promise.resolve(docs.sort(repositoryComparator));
+    });
   }
 
   fetchFromGitHub(repository) {
