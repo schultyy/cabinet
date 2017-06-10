@@ -77,7 +77,7 @@ export default class Facade {
     });
   }
 
-  fetchFromGitHub(repository) {
+  fetchIssuesFromGitHub(repository) {
     return this.apolloClient.query({
       query: gql(getIssuesForRepositoryQuery(repository.name))
     })
@@ -115,7 +115,7 @@ export default class Facade {
           return 0;
         });
       } else {
-        return this.fetchFromGitHub(repository);
+        return this.fetchIssuesFromGitHub(repository);
       }
     });
   }
@@ -138,6 +138,10 @@ export default class Facade {
       });
     }))
     .then(() => this._convertIssues(issues));
+  }
+
+  reloadIssues(repository) {
+
   }
 
   _mapComments(issue) {
