@@ -122,26 +122,32 @@ export default class Facade {
 
   storeIssues(repository, issues) {
     return Promise.all(issues.map(issue => {
-      return this.database.put({
-        _id: issue.id,
-        title: issue.title,
-        number: issue.number,
-        repository: repository._id,
-        body: issue.body,
-        state: issue.state,
-        assignees: this._filterAssignees(issue),
-        milestone: this._getMilestone(issue),
-        createdAt: issue.createdAt,
-        author: issue.author,
-        comments: this._mapComments(issue),
-        type: "issue"
+      return this.database
+      .get(issue.id)
+      .catch((error) => {
+        if (error.name === 'not_found') {
+          return Promise.resolve({ _id: issue.id, type: "issue" });
+        }
+        else {
+          throw error;
+        }
+      })
+      .then((document) => {
+        return this.database.put(Object.assign(document, {
+          title: issue.title,
+          number: issue.number,
+          repository: repository._id,
+          body: issue.body,
+          state: issue.state,
+          assignees: this._filterAssignees(issue),
+          milestone: this._getMilestone(issue),
+          createdAt: issue.createdAt,
+          author: issue.author,
+          comments: this._mapComments(issue),
+        }));
       });
     }))
     .then(() => this._convertIssues(issues));
-  }
-
-  reloadIssues(repository) {
-
   }
 
   _mapComments(issue) {
