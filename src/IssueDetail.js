@@ -32,17 +32,13 @@ export default class IssueDetail extends React.Component {
   //to consolidate the code for that
   renderIssueEntry(issueOrComment) {
     return (
-      <div>
+      <div className="entry">
         <div className="author">
           <img src={issueOrComment.author.avatarUrl} alt={issueOrComment.author.login} />
         </div>
         <div>
-          <div>
-            <strong>Created by: </strong>
-            {issueOrComment.author.login}
-          </div>
-          <div>
-            <strong>Created at: </strong>
+          <div className="header">
+            <span className="login">{issueOrComment.author.login}</span>
             <time dateTime={issueOrComment.createdAt}>{moment(issueOrComment.createdAt).format('MMMM Do YYYY, h:mm a')}</time>
           </div>
           <ReactMarkdown className="body" source={issueOrComment.body} />
@@ -75,9 +71,7 @@ export default class IssueDetail extends React.Component {
           <span><strong>Milestone: </strong>{milestone()}</span>
         </div>
         {this.renderIssueEntry(issue)}
-        <div className="comments">
-          {this.renderComments()}
-        </div>
+        {this.renderComments()}
       </div>
     );
   }
@@ -93,7 +87,7 @@ export default class IssueDetail extends React.Component {
       <div>
         <div className="meta">
           <span className={this.issueStateClassname(issue)}>{issue.state}</span>
-          <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
+          <span className="headline"><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
         </div>
         { this.renderIssueDetails() }
       </div>

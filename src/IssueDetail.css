@@ -55,11 +55,31 @@
   color: #FFFFFF;
 }
 
+.entry {
+  border: 1px solid #FF5722;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
 .meta {
   margin-bottom: 10px;
+  border-radius: 2px;
+}
+
+.entry .header .login {
+  margin-right: 10px;
+}
+
+.meta .headline {
+  border-bottom: 1px solid #FF5722;
 }
 
 .comments ul {
   list-style-type: none;
   padding-left: 0px;
+  overflow-y: visible;
 }
