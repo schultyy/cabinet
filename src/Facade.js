@@ -2,6 +2,7 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
 import PouchDB from 'pouchdb';
 import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
+import Repository from './Repository';
 
 function repositoryComparator(leftRepo, rightRepo) {
   if(leftRepo.createdAt > rightRepo.createdAt) {
@@ -46,7 +47,7 @@ export default class Facade {
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
         resultSet.docs.sort(repositoryComparator);
-        return Promise.resolve(resultSet.docs);
+        return Promise.resolve(Repository.fromList(resultSet.docs));
       } else {
         return this.apolloClient.query({
           query: gql(getRepositoriesQuery)
@@ -72,6 +73,7 @@ export default class Facade {
     }))
     .then(() => this.database.allDocs({include_docs: true}))
     .then((resultSet) => resultSet.rows.map(row => row.doc))
+    .then((resultSet) => Repository.fromList(resultSet))
     .then((docs) => {
       return Promise.resolve(docs.sort(repositoryComparator));
     });
@@ -100,7 +102,7 @@ export default class Facade {
       return this.database.find({
         selector: {
           type: 'issue',
-          repository: repository._id
+          repository: repository.id
         },
       });
     })
@@ -146,8 +148,7 @@ export default class Facade {
           comments: this._mapComments(issue),
         }));
       });
-    }))
-    .then(() => this._convertIssues(issues));
+    }));
   }
 
   _mapComments(issue) {

@@ -9,7 +9,7 @@ export default class RepositoryList extends React.Component {
     if (!repository || !selectedRepository) {
       return 'repository';
     }
-    if (repository._id === selectedRepository._id) {
+    if (repository.id === selectedRepository.id) {
       return 'repository selected';
     }
     return 'repository';
@@ -34,7 +34,7 @@ export default class RepositoryList extends React.Component {
       <div className="repositories list">
         <ul>
           {repositories.map(r => (
-            <li key={r._id} className={this.repositoryClassNames(r)}>
+            <li key={r.id} className={this.repositoryClassNames(r)}>
               <span>{this.renderRepositoryStatus(r)}</span>
               <button onClick={() => onSelectRepository(r)}>
                 {r.nameWithOwner}
