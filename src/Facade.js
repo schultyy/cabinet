@@ -82,13 +82,4 @@ export default class Facade {
     .then(documents => documents.map(doc => new Issue(doc)))
     .then(issues => issues.sort(Issue.comparator));
   }
-
-  _convertIssues(issues) {
-    return issues.map(issue => {
-      if (issue._id) {
-        return issue;
-      }
-      return Object.assign({}, issue, {_id: issue.id});
-    });
-  }
 }
