@@ -59,7 +59,7 @@ export default class IssueList extends React.Component {
     const { expandedIssue } = this.state;
 
     const isExpanded = (otherIssue) => {
-      return (expandedIssue && (expandedIssue._id === otherIssue._id));
+      return (expandedIssue && (expandedIssue.id === otherIssue.id));
     };
 
     if (!renderIssues) {
