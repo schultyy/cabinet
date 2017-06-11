@@ -4,16 +4,6 @@ import PouchDB from 'pouchdb';
 import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 import Repository from './Repository';
 
-function repositoryComparator(leftRepo, rightRepo) {
-  if(leftRepo.createdAt > rightRepo.createdAt) {
-    return -1;
-  }
-  else if(leftRepo.createdAt < rightRepo.createdAt) {
-    return 1;
-  }
-  return 0;
-}
-
 export default class Facade {
   constructor(accessToken) {
     this.apolloClient = new ApolloClient({
@@ -46,7 +36,7 @@ export default class Facade {
     })
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
-        resultSet.docs.sort(repositoryComparator);
+        resultSet.docs.sort(Repository.comparator);
         return Promise.resolve(Repository.fromList(resultSet.docs));
       } else {
         return this.apolloClient.query({
@@ -75,7 +65,7 @@ export default class Facade {
     .then((resultSet) => resultSet.rows.map(row => row.doc))
     .then((resultSet) => Repository.fromList(resultSet))
     .then((docs) => {
-      return Promise.resolve(docs.sort(repositoryComparator));
+      return Promise.resolve(docs.sort(Repository.comparator));
     });
   }
 

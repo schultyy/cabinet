@@ -12,4 +12,14 @@ export default class Repository {
   static fromList(fromDatabase) {
     return fromDatabase.map((databaseObject) => new Repository(databaseObject));
   }
+
+  static comparator(leftRepository, rightRepository) {
+    if(leftRepository.createdAt > rightRepository.createdAt) {
+      return -1;
+    }
+    else if(leftRepository.createdAt < rightRepository.createdAt) {
+      return 1;
+    }
+    return 0;
+  }
 }
