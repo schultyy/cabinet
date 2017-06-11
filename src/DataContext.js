@@ -33,10 +33,6 @@ export default class DataContext {
     });
   }
 
-  allEntries() {
-    return this.database.allDocs({include_docs: true});
-  }
-
   loadIssuesForRepository(repository) {
     return this.database.createIndex({
       index: {
@@ -78,10 +74,7 @@ export default class DataContext {
         comments: this._mapComments(issue),
       }));
     })
-    .then(documentResult => {
-      console.log('document.id', documentResult, documentResult.id);
-      return this.database.get(documentResult.id);
-    });
+    .then(documentResult => this.database.get(documentResult.id));
   }
 
   _mapComments(issue) {

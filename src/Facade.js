@@ -24,8 +24,8 @@ export default class Facade {
     return this.dataContext.loadRepositories()
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
-        resultSet.docs.sort(Repository.comparator);
-        return Promise.resolve(Repository.fromList(resultSet.docs));
+        return Promise.resolve(Repository.fromList(resultSet.docs)
+                                          .sort(Repository.comparator));
       } else {
         return this.apolloClient.query({
           query: gql(getRepositoriesQuery)
@@ -41,9 +41,8 @@ export default class Facade {
     return Promise.all(repositories.map(repository => {
       return this.dataContext.storeRepository(repository);
     }))
-    .then(() => this.dataContext.allEntries())
-    .then((resultSet) => resultSet.rows.map(row => row.doc))
-    .then((resultSet) => Repository.fromList(resultSet))
+    .then(() => this.dataContext.loadRepositories())
+    .then((resultSet) => Repository.fromList(resultSet.docs))
     .then((docs) => {
       return Promise.resolve(docs.sort(Repository.comparator));
     });
