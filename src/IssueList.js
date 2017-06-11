@@ -90,7 +90,7 @@ export default class IssueList extends React.Component {
         />
         <ul>
           {issues.map(issue => (
-            <li key={issue._id} className="issue">
+            <li key={issue.id} className="issue">
               <button
                 className={issueClassname(issue)}
                 onClick={() => this.onIssueClick(issue)}

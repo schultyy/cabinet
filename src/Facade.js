@@ -1,8 +1,9 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
-import PouchDB from 'pouchdb';
 import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 import Repository from './Repository';
+import Issue from './Issue';
+import DataContext from './DataContext';
 
 export default class Facade {
   constructor(accessToken) {
@@ -16,24 +17,11 @@ export default class Facade {
         }
       })
     });
-
-    this.database = new PouchDB('offline-issues');
-    PouchDB.plugin(require('pouchdb-find'));
+    this.dataContext = new DataContext();
   }
 
   loadRepositories() {
-    return this.database.createIndex({
-      index: {
-        fields: ['type']
-      }
-    })
-    .then(() => {
-      return this.database.find({
-        selector: {
-          type: 'repository'
-        }
-      });
-    })
+    return this.dataContext.loadRepositories()
     .then(resultSet => {
       if (resultSet.docs.length > 0) {
         resultSet.docs.sort(Repository.comparator);
@@ -51,17 +39,9 @@ export default class Facade {
     const repositories = resultSet.data.viewer.repositories.nodes;
 
     return Promise.all(repositories.map(repository => {
-      return this.database.put({
-        _id: repository.id,
-        name: repository.name,
-        nameWithOwner: repository.nameWithOwner,
-        createdAt: repository.createdAt,
-        isPrivate: repository.isPrivate,
-        hasIssuesEnabled: repository.hasIssuesEnabled,
-        type: "repository"
-      });
+      return this.dataContext.storeRepository(repository);
     }))
-    .then(() => this.database.allDocs({include_docs: true}))
+    .then(() => this.dataContext.allEntries())
     .then((resultSet) => resultSet.rows.map(row => row.doc))
     .then((resultSet) => Repository.fromList(resultSet))
     .then((docs) => {
@@ -83,29 +63,12 @@ export default class Facade {
   }
 
   loadIssuesForRepository(repository) {
-    return this.database.createIndex({
-      index: {
-        fields: ['type', 'repository']
-      }
-    })
-    .then(() => {
-      return this.database.find({
-        selector: {
-          type: 'issue',
-          repository: repository.id
-        },
-      });
-    })
+    return this.dataContext.loadIssuesForRepository(repository)
     .then(results => {
       if(results.docs.length > 0) {
-        return results.docs.sort((a, b) => {
-          if (a.state > b.state) {
-            return -1;
-          } else if (a.state < b.state) {
-            return 1;
-          }
-          return 0;
-        });
+        return results.docs
+                  .map(doc => new Issue(doc))
+                  .sort(Issue.comparator);
       } else {
         return this.fetchIssuesFromGitHub(repository);
       }
@@ -114,50 +77,10 @@ export default class Facade {
 
   storeIssues(repository, issues) {
     return Promise.all(issues.map(issue => {
-      return this.database
-      .get(issue.id)
-      .catch((error) => {
-        if (error.name === 'not_found') {
-          return Promise.resolve({ _id: issue.id, type: "issue" });
-        }
-        else {
-          throw error;
-        }
-      })
-      .then((document) => {
-        return this.database.put(Object.assign(document, {
-          title: issue.title,
-          number: issue.number,
-          repository: repository._id,
-          body: issue.body,
-          state: issue.state,
-          assignees: this._filterAssignees(issue),
-          milestone: this._getMilestone(issue),
-          createdAt: issue.createdAt,
-          author: issue.author,
-          comments: this._mapComments(issue),
-        }));
-      });
-    }));
-  }
-
-  _mapComments(issue) {
-    return issue.comments.nodes;
-  }
-
-  _getMilestone(issue) {
-    if (issue.milestone) {
-      return issue.milestone.title;
-    }
-    return null;
-  }
-
-  _filterAssignees(issue) {
-    if(!issue.assignees.nodes) {
-      return [];
-    }
-
-    return issue.assignees.nodes;
+      return this.dataContext.saveOrUpdateIssue(issue, repository);
+    }))
+    .then(documents => documents.map(doc => new Issue(doc)))
+    .then(issues => issues.sort(Issue.comparator));
   }
 
   _convertIssues(issues) {
