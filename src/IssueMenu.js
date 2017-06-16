@@ -7,7 +7,8 @@ export default class IssueMenu extends React.Component {
     const {
       showClosedIssues,
       onHideClosedClick,
-      onShowClosedClick
+      onShowClosedClick,
+      onUpdateIssuesClick
     } = this.props;
 
     return (
@@ -24,6 +25,10 @@ export default class IssueMenu extends React.Component {
             Show closed issues
           </button>
         : null }
+        <button onClick={onUpdateIssuesClick}>
+          <i className="fa fa-refresh" aria-hidden="true"></i>
+          Reload issues
+        </button>
       </div>
     );
   }

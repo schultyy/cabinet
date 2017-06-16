@@ -54,6 +54,11 @@ export default class IssueList extends React.Component {
   render() {
     const issues = this.filterIssues();
 
+    const {
+      reloadIssues,
+      selectedRepository
+    } = this.props;
+
     const renderIssues = issues.length > 0;
 
     const { expandedIssue } = this.state;
@@ -87,6 +92,7 @@ export default class IssueList extends React.Component {
           showClosedIssues={this.state.showClosedIssues}
           onHideClosedClick={this.hideClosedIssues.bind(this)}
           onShowClosedClick={this.showClosedIssues.bind(this)}
+          onUpdateIssuesClick={() => reloadIssues(selectedRepository)}
         />
         <ul>
           {issues.map(issue => (

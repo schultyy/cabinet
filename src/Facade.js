@@ -50,15 +50,22 @@ export default class Facade {
 
   fetchIssuesFromGitHub(repository) {
     return this.apolloClient.query({
-      query: gql(getIssuesForRepositoryQuery(repository.name))
+      query: gql(getIssuesForRepositoryQuery(repository.name)),
+      cachePolicy: 'no-cache',
+      fetchPolicy: 'network-only'
     })
     .then((resultSet) => {
+      console.log(resultSet);
       if (resultSet.data.viewer.repository) {
         const issues = resultSet.data.viewer.repository.issues.nodes;
         return this.storeIssues(repository, issues);
       }
       return Promise.resolve([]);
     });
+  }
+
+  updateIssuesForRepository(repository) {
+    return this.fetchIssuesFromGitHub(repository);
   }
 
   loadIssuesForRepository(repository) {

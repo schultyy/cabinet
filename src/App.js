@@ -39,6 +39,19 @@ class App extends Component {
     }
   }
 
+  reloadIssuesForRepository(repository) {
+    this.setState({
+      issues: []
+    });
+    this.facade.updateIssuesForRepository(repository)
+    .then(resultSet => {
+      this.setState({
+        issues: resultSet,
+        selectedRepository: repository
+      });
+    });
+  }
+
   onSaveToken() {
     this.accessToken = this.refs.githubToken.value;
     saveToken(this.accessToken);
@@ -97,7 +110,11 @@ class App extends Component {
             onSelectRepository={this.onSelectRepository.bind(this)}
             repositories={repositories}
           />
-          <IssueList issues={issues} />
+          <IssueList
+            issues={issues}
+            selectedRepository={this.state.selectedRepository}
+            reloadIssues={this.reloadIssuesForRepository.bind(this)}
+          />
         </div>
       </div>
     );
