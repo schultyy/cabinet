@@ -56,7 +56,8 @@ export default class IssueList extends React.Component {
 
     const {
       reloadIssues,
-      selectedRepository
+      selectedRepository,
+      networkState,
     } = this.props;
 
     const renderIssues = issues.length > 0;
@@ -86,9 +87,12 @@ export default class IssueList extends React.Component {
       return `issue-state ${state}`;
     };
 
+    const canSync= networkState === 'online';
+
     return (
       <div className="issues list">
         <IssueMenu
+          canSync={canSync}
           showClosedIssues={this.state.showClosedIssues}
           onHideClosedClick={this.hideClosedIssues.bind(this)}
           onShowClosedClick={this.showClosedIssues.bind(this)}

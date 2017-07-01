@@ -8,6 +8,7 @@ export class RepositoryMenu extends ContextMenu {
       {
         canRender: () => true,
         clickHandler: onUpdateRepositoriesClick,
+        isEnabled: (canSync) => !canSync,
         render: (key) => (
           <div>
             <i className="fa fa-refresh" aria-hidden="true"></i>
@@ -52,6 +53,7 @@ export class IssueMenu extends ContextMenu {
       {
         canRender: () => true,
         clickHandler: onUpdateIssuesClick,
+        isEnabled: (canSync) => !canSync,
         render: (key) => (
           <div>
             <i className="fa fa-refresh" aria-hidden="true"></i>

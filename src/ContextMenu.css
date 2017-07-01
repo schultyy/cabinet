@@ -29,6 +29,11 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
+.menu button[disabled] {
+  pointer-events: none;
+  background-color: #9E9E9E;
+}
+
 .menu button i {
   margin-right: 5px;
 }

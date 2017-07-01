@@ -135,12 +135,14 @@ class App extends Component {
         </div>
         <div className={reposClassNames}>
           <RepositoryList
+            networkState={connectivityStatus}
             onUpdateRepositories={this.onUpdateRepositories.bind(this)}
             selectedRepository={this.state.selectedRepository}
             onSelectRepository={this.onSelectRepository.bind(this)}
             repositories={repositories}
           />
           <IssueList
+            networkState={connectivityStatus}
             issues={issues}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}

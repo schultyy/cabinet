@@ -32,12 +32,16 @@ export default class RepositoryList extends React.Component {
     const {
       onUpdateRepositories,
       onSelectRepository,
-      repositories
+      repositories,
+      networkState
     } = this.props;
+
+    const canSync= networkState === 'online';
 
     return (
       <div>
         <RepositoryMenu
+          canSync={canSync}
           onUpdateRepositoriesClick={onUpdateRepositories}
         />
         <div className="repositories list">

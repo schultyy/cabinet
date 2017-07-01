@@ -9,14 +9,18 @@ export default class ContextMenu extends React.Component {
   }
 
   render() {
+    const { canSync } = this.props;
+
     return (
       <div className="menu">
         {this.menuItems().map((item, key) => {
           if (item.canRender()) {
             const clickHandler = item.clickHandler ? item.clickHandler : null;
 
+            const disabled = item.isEnabled ? item.isEnabled(canSync) : false;
+
             return (
-              <button key={key} onClick={clickHandler}>
+              <button disabled={disabled} key={key} onClick={clickHandler}>
                 {item.render()}
               </button>
             );
