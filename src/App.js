@@ -73,6 +73,21 @@ class App extends Component {
     });
   }
 
+  onUpdateRepositories() {
+    this.setState({
+      selectedRepository: null,
+      repositories: [],
+      issues: []
+    });
+    this.facade.reloadRepositories()
+    .then(resultSet => {
+      this.setState({
+        repositories: resultSet
+      });
+    })
+    .catch(error => console.error(error));
+  }
+
   render() {
     const hasToken = this.state.hasToken;
 
@@ -108,6 +123,7 @@ class App extends Component {
         </div>
         <div className={reposClassNames}>
           <RepositoryList
+            onUpdateRepositories={this.onUpdateRepositories.bind(this)}
             selectedRepository={this.state.selectedRepository}
             onSelectRepository={this.onSelectRepository.bind(this)}
             repositories={repositories}

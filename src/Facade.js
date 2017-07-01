@@ -35,6 +35,14 @@ export default class Facade {
     });
   }
 
+  reloadRepositories() {
+   return this.dataContext.dropDatabase()
+    .then(() => {
+      this.dataContext = new DataContext();
+      return this.loadRepositories();
+    });
+  }
+
   storeRepositories(resultSet) {
     const repositories = resultSet.data.viewer.repositories.nodes;
 
@@ -55,7 +63,6 @@ export default class Facade {
       fetchPolicy: 'network-only'
     })
     .then((resultSet) => {
-      console.log(resultSet);
       if (resultSet.data.viewer.repository) {
         const issues = resultSet.data.viewer.repository.issues.nodes;
         return this.storeIssues(repository, issues);

@@ -77,6 +77,10 @@ export default class DataContext {
     .then(documentResult => this.database.get(documentResult.id));
   }
 
+  dropDatabase() {
+    return this.database.destroy();
+  }
+
   _mapComments(issue) {
     return issue.comments.nodes;
   }
