@@ -1,6 +1,6 @@
 import React from 'react';
 import IssueDetail from './IssueDetail';
-import IssueMenu from './IssueMenu';
+import { IssueMenu } from './CustomMenu';
 import './IssueList.css';
 
 export default class IssueList extends React.Component {
