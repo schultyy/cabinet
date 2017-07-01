@@ -17,12 +17,22 @@ class App extends Component {
       hasToken: !!this.accessToken,
       repositories: [],
       selectedRepository: null,
-      issues: []
+      issues: [],
+      connectivityStatus: null
     };
   }
 
   componentDidMount() {
     this.getRepositories();
+    this.onNetworkStatusChange();
+    window.addEventListener('online', this.onNetworkStatusChange.bind(this));
+    window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
+  }
+
+  onNetworkStatusChange() {
+    this.setState({
+      connectivityStatus: navigator.onLine ? "online" : "offline"
+    });
   }
 
   getRepositories() {
@@ -89,10 +99,11 @@ class App extends Component {
   }
 
   render() {
-    const hasToken = this.state.hasToken;
+    const { issues, repositories, hasToken, connectivityStatus } = this.state;
 
     var configurationClassNames;
     var reposClassNames;
+    var networkConnectivityClassNames = `connectivity-status ${connectivityStatus}`;
 
     if (hasToken) {
       configurationClassNames = "configuration hidden";
@@ -103,13 +114,14 @@ class App extends Component {
       reposClassNames = "master-detail hidden";
     }
 
-    const { issues, repositories } = this.state;
-
     return (
       <div className="App">
         <header>
           <h1>GitHub Issue <span role="img" aria-label="tractor">🚜</span></h1>
         </header>
+        <div className={networkConnectivityClassNames}>
+          {connectivityStatus}
+        </div>
         <div className={configurationClassNames}>
           <h3>Configure your GitHub OAuth token</h3>
           <div className="controls">
