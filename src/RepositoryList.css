@@ -1,16 +1,20 @@
 .repositories {
   width: 400px;
+  margin-top: 10px
 }
 
 .repositories ul {
   padding-left: 0px;
-  margin-top: 0px;
+  margin-top: 5px;
 }
 
 .repositories ul li {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  margin: 5px;
+  padding: 5px;
+  height: 24px;
 }
 
 .repository {
