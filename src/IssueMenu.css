@@ -3,20 +3,30 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  border: 0.5px solid #FF5722;
-  border-radius: 2px;
+  margin-top: 5px;
+  margin-left: 5px;
+  height: 35px;
 }
 
 .menu button {
+  display: inline-block;
   outline: 0;
   background: transparent;
   border: none;
-  padding: 0px 5px;
-  margin: 0px;
+  padding: 5px 15px;
+  margin-right: 5px;
   height: 100%;
+  line-height: 100%;
   width: auto;
-  height: 25px;
   white-space: nowrap;
+  background-color: #512DA8;
+  color: #FFFFFF;
+  font-weight: 100;
+  font-size: 1em;
+  border-radius: 1px;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
 .menu button i {
@@ -24,8 +34,11 @@
 }
 
 .menu button:hover {
-  background-color: #757575;
+  background-color:#673AB7;
+  color: #757575;
   border-radius: 2px;
   color: white;
   cursor: pointer;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  transition-delay: 0s;
 }

@@ -87,7 +87,7 @@ export default class IssueDetail extends React.Component {
       <div>
         <div className="meta">
           <span className={this.issueStateClassname(issue)}>{issue.state}</span>
-          <span className="headline"><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
+          <h1 className="headline"><span className="number">{`#${issue.number}`}</span>{issue.title}</h1>
         </div>
         { this.renderIssueDetails() }
       </div>

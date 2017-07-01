@@ -5,6 +5,17 @@
   margin: auto 10px;
 }
 
+.App header {
+  background-color: #512DA8;
+  width: 100%;
+  color: #FFFFFF;
+}
+
+.App header h1 {
+  display: block;
+  text-align: center;
+}
+
 .visible {
   display: block;
 }
@@ -42,7 +53,8 @@
 }
 
 .list > ul > li {
-  border: 0.5px solid #FF5722;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+  margin: 5px;
   padding: 5px;
 }
 

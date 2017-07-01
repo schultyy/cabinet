@@ -1,7 +1,7 @@
 
 
 .issue-details .body {
-  color: #757575;
+  color: #212121;
 }
 
 .issue-details {
@@ -12,8 +12,9 @@
 
 .issue-details .milestone-assignee {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .issue-details .milestone-assignee span {
@@ -56,7 +57,7 @@
 }
 
 .entry {
-  border: 1px solid #FF5722;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
   border-radius: 2px;
   display: flex;
   flex-direction: row;
@@ -68,6 +69,13 @@
 .meta {
   margin-bottom: 10px;
   border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.entry .header {
+  font-weight: 600;
 }
 
 .entry .header .login {
@@ -75,7 +83,9 @@
 }
 
 .meta .headline {
-  border-bottom: 1px solid #FF5722;
+  display: inline;
+  font-weight: 200;
+  font-size: 28px;
 }
 
 .comments ul {

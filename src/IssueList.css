@@ -30,6 +30,12 @@
 
 .issue button.selected {
   padding: 5px;
+  background-color: #673AB7;
+  color: #FFFFFF;
+}
+
+.issue button.selected .number {
+  color: #9E9E9E;
 }
 
 .issue button.selected::before{

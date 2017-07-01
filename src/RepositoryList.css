@@ -1,7 +1,5 @@
 .repositories {
-  height: 700px;
   width: 400px;
-  overflow-y: scroll;
 }
 
 .repositories ul {
@@ -29,7 +27,12 @@
 }
 
 .repository.selected {
-  background-color: #FF5722;
+  background-color: #673AB7;
+  color: #FFFFFF;
+}
+
+.repository.selected button {
+  color: #FFFFFF;
 }
 
 .repository button:hover {
