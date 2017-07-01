@@ -7,11 +7,12 @@ export class RepositoryMenu extends ContextMenu {
     return [
       {
         canRender: () => true,
+        clickHandler: onUpdateRepositoriesClick,
         render: (key) => (
-          <button key={key} onClick={onUpdateRepositoriesClick}>
+          <div>
             <i className="fa fa-refresh" aria-hidden="true"></i>
             Reload repositories
-          </button>
+          </div>
         )
       }
     ];
@@ -30,29 +31,32 @@ export class IssueMenu extends ContextMenu {
     return [
       {
         canRender: () => showClosedIssues,
+        clickHandler: onHideClosedClick,
         render: (key) => (
-          <button key={key} onClick={onHideClosedClick}>
+          <div>
             <i className="fa fa-toggle-on" aria-hidden="true"></i>
             Show closed issues
-          </button>
+          </div>
         )
       },
       {
         canRender: () => !showClosedIssues,
+        clickHandler: onShowClosedClick,
         render: (key) => (
-          <button key={key} onClick={onShowClosedClick}>
+          <div>
             <i className="fa fa-toggle-off" aria-hidden="true"></i>
             Show closed issues
-          </button>
+          </div>
         )
       },
       {
         canRender: () => true,
+        clickHandler: onUpdateIssuesClick,
         render: (key) => (
-          <button key={key} onClick={onUpdateIssuesClick}>
+          <div>
             <i className="fa fa-refresh" aria-hidden="true"></i>
             Reload issues
-          </button>
+          </div>
         )
       }
     ];

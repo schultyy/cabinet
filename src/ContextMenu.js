@@ -11,9 +11,15 @@ export default class ContextMenu extends React.Component {
   render() {
     return (
       <div className="menu">
-        {this.menuItems().map((item, index) => {
+        {this.menuItems().map((item, key) => {
           if (item.canRender()) {
-            return item.render(index);
+            const clickHandler = item.clickHandler ? item.clickHandler : null;
+
+            return (
+              <button key={key} onClick={clickHandler}>
+                {item.render()}
+              </button>
+            );
           }
           return null;
         })}
