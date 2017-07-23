@@ -1,8 +1,8 @@
 {
-  "name": "issue-trecker",
+  "name": "cabinet",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://schultyy.github.io/issue-trecker",
+  "homepage": "https://schultyy.github.io/cabinet",
   "dependencies": {
     "apollo-client": "^1.2.2",
     "font-awesome": "^4.7.0",

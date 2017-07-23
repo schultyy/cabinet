@@ -117,7 +117,7 @@ class App extends Component {
     return (
       <div className="App">
         <header>
-          <h1>GitHub Issue <span role="img" aria-label="tractor">🚜</span></h1>
+          <h1>Cabinet</h1>
         </header>
         <div className={networkConnectivityClassNames}>
           {connectivityStatus}
