@@ -6,19 +6,15 @@
 
 .issue-details {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.issue-details .milestone-assignee {
+.issue-details .content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.issue-details .milestone-assignee span {
-  margin-right: 15px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .issue-details .author {

@@ -1,0 +1,32 @@
+.issue-options {
+  width: 250px;
+  height: 300px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+  border-radius: 2px;
+  margin-left: 5px;
+}
+
+.issue-options ul {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+
+.issue-options ul li {
+  padding-top: 5px;
+  padding-left: 5px;
+  font-size: 13px;
+}
+
+.issue-options .milestone-assignee {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.issue-options .milestone-assignee span {
+  margin-right: 15px;
+}
