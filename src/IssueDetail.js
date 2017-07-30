@@ -49,10 +49,10 @@ export default class IssueDetail extends React.Component {
   }
 
   renderIssueOptions() {
-    const { issue } = this.props;
+    const { issue, onToggleIssueStatus } = this.props;
 
     return (
-      <IssueOptions issue={issue} />
+      <IssueOptions onToggleIssueStatus={onToggleIssueStatus} issue={issue} />
     );
   }
 

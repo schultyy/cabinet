@@ -58,6 +58,7 @@ export default class IssueList extends React.Component {
       reloadIssues,
       selectedRepository,
       networkState,
+      onToggleIssueStatus
     } = this.props;
 
     const renderIssues = issues.length > 0;
@@ -111,7 +112,7 @@ export default class IssueList extends React.Component {
             </li>
           ))}
         </ul>
-        <IssueDetail issue={expandedIssue} />
+        <IssueDetail onToggleIssueStatus={onToggleIssueStatus} issue={expandedIssue} />
       </div>
     );
   }

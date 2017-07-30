@@ -62,6 +62,10 @@ class App extends Component {
     });
   }
 
+  onToggleIssueStatus(issue) {
+    console.log('toggling status for ', issue);
+  }
+
   onSaveToken() {
     this.accessToken = this.refs.githubToken.value;
     saveToken(this.accessToken);
@@ -144,6 +148,7 @@ class App extends Component {
           <IssueList
             networkState={connectivityStatus}
             issues={issues}
+            onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
           />

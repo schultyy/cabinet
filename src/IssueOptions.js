@@ -3,8 +3,7 @@ import './IssueOptions.css';
 
 export default class IssueOptions extends React.Component {
   render() {
-
-    const { issue } = this.props;
+    const { issue, onToggleIssueStatus } = this.props;
 
     const assignees = () => {
       if (issue.assignees && issue.assignees.length === 0) {
@@ -27,7 +26,7 @@ export default class IssueOptions extends React.Component {
           <span><strong>Milestone: </strong>{milestone()}</span>
         </div>
         <ul className="menu">
-          <li><button>Close issue</button></li>
+          <li><button onClick={() => onToggleIssueStatus(issue)}>Close issue</button></li>
         </ul>
       </div>
     );
