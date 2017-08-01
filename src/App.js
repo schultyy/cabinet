@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import IssueList from './IssueList';
 import RepositoryList from './RepositoryList';
+import QueueIndicator from './QueueIndicator';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
 import './App.css';
@@ -63,7 +64,7 @@ class App extends Component {
   }
 
   onToggleIssueStatus(issue) {
-    console.log('toggling status for ', issue);
+    this.facade.toggleIssueState(this.state.selectedRepository, issue);
   }
 
   onSaveToken() {
@@ -153,6 +154,7 @@ class App extends Component {
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
           />
         </div>
+        <QueueIndicator activeJobs={this.facade.activeJobs()} />
       </div>
     );
   }

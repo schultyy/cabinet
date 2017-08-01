@@ -1,0 +1,17 @@
+.queue-count {
+  position: absolute;
+  bottom: 0px;
+  right: 15px;
+  background-color: rgb(81, 45, 168);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.queue-count.visible {
+  display: block;
+}
+
+.queue-count.hidden {
+  display: none;
+}
