@@ -99,8 +99,17 @@ export default class Facade {
   }
 
   toggleIssueState(repository, issue) {
-    console.log(repository, issue);
-    this.syncQueue.enqueue(repository, issue);
+    var updatedIssue;
+    if (issue.state === 'OPEN') {
+      updatedIssue = Object.assign(issue, { 'state': 'CLOSED' });
+    } else {
+      updatedIssue = Object.assign(issue, { 'state': 'OPEN' });
+    }
+
+    return this.dataContext.updateIssue(updatedIssue, 'state')
+    .then(() => {
+      return Promise.resolve(this.syncQueue.enqueue(repository, issue));
+    });
   }
 
   activeJobs() {

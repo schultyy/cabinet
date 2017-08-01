@@ -19,7 +19,8 @@ class App extends Component {
       repositories: [],
       selectedRepository: null,
       issues: [],
-      connectivityStatus: null
+      connectivityStatus: null,
+      activeSyncJobs: 0
     };
   }
 
@@ -64,7 +65,13 @@ class App extends Component {
   }
 
   onToggleIssueStatus(issue) {
-    this.facade.toggleIssueState(this.state.selectedRepository, issue);
+    this.facade.toggleIssueState(this.state.selectedRepository, issue)
+    .then(() => {
+      this.facade.loadIssuesForRepository(this.state.selectedRepository);
+      this.setState({
+        activeSyncJobs: this.facade.activeJobs()
+      });
+    });
   }
 
   onSaveToken() {
@@ -104,7 +111,7 @@ class App extends Component {
   }
 
   render() {
-    const { issues, repositories, hasToken, connectivityStatus } = this.state;
+    const { issues, repositories, hasToken, connectivityStatus, activeSyncJobs } = this.state;
 
     var configurationClassNames;
     var reposClassNames;
@@ -154,7 +161,7 @@ class App extends Component {
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
           />
         </div>
-        <QueueIndicator activeJobs={this.facade.activeJobs()} />
+        <QueueIndicator activeJobs={activeSyncJobs} />
       </div>
     );
   }
