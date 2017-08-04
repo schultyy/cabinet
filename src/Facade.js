@@ -19,7 +19,7 @@ export default class Facade {
       })
     });
     this.dataContext = new DataContext();
-    this.syncQueue = new SyncQueue();
+    this.syncQueue = new SyncQueue(accessToken);
   }
 
   loadRepositories() {
