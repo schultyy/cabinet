@@ -7,14 +7,36 @@ export default class SyncQueue {
     this.accessToken = accessToken;
     this.jobs = [];
     this.database = new PouchDB('offline-issues');
+    window.addEventListener('online', this.onNetworkStatusChange.bind(this));
+    window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
+    this.jobFinishedCallback = null;
   }
 
   enqueue(repository, issue) {
-    // this.jobs.push({
-    //   repository,
-    //   issue
-    // });
-    this.run(repository, issue);
+    this.jobs.push({
+      repository,
+      issue
+    });
+    this.workOff();
+  }
+
+  workOff() {
+    if(navigator.onLine) {
+      while (true) {
+        const job = this.jobs.shift();
+        if (!job) {
+          break;
+        }
+        const { repository, issue } = job;
+        this.run(repository, issue);
+      }
+    }
+  }
+
+  onNetworkStatusChange() {
+    if(navigator.onLine) {
+      this.workOff();
+    }
   }
 
   run(repository, issue) {
@@ -31,6 +53,11 @@ export default class SyncQueue {
     const url = `${BASE_URL}/repos/${repository.nameWithOwner}/issues/${issue.number}`;
     const fetchRequest = new Request(url, requestParamenters);
 
-    return fetch(fetchRequest);
+    return fetch(fetchRequest)
+    .then(() => {
+      if(this.jobFinishedCallback) {
+        this.jobFinishedCallback();
+      }
+    });
   }
 }

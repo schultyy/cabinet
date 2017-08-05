@@ -7,7 +7,7 @@ import DataContext from './DataContext';
 import SyncQueue from './SyncQueue';
 
 export default class Facade {
-  constructor(accessToken) {
+  constructor(accessToken, networkStateChangedCallback) {
     this.apolloClient = new ApolloClient({
       networkInterface: createNetworkInterface({
         uri: 'https://api.github.com/graphql',
@@ -19,7 +19,7 @@ export default class Facade {
       })
     });
     this.dataContext = new DataContext();
-    this.syncQueue = new SyncQueue(accessToken);
+    this.syncQueue = new SyncQueue(accessToken, networkStateChangedCallback);
   }
 
   loadRepositories() {

@@ -12,7 +12,7 @@ class App extends Component {
     super();
 
     this.accessToken = getToken();
-    this.facade = new Facade(this.accessToken);
+    this.facade = new Facade(this.accessToken, this.onNetworkStatusChange.bind(this));
 
     this.state = {
       hasToken: !!this.accessToken,
@@ -33,7 +33,8 @@ class App extends Component {
 
   onNetworkStatusChange() {
     this.setState({
-      connectivityStatus: navigator.onLine ? "online" : "offline"
+      connectivityStatus: navigator.onLine ? "online" : "offline",
+      activeSyncJobs: this.facade.activeJobs()
     });
   }
 
