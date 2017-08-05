@@ -21,11 +21,10 @@ export default class ContextMenu extends React.Component {
               if(!isMenuEnabled) {
                 return true;
               }
-              if (item.isEnabled) {
+              else if (item.isEnabled) {
                 return item.isEnabled(canSync);
-              } else {
-                return false;
-              };
+              }
+              return false;
             };
 
             return (

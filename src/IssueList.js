@@ -62,8 +62,6 @@ export default class IssueList extends React.Component {
       isMenuEnabled
     } = this.props;
 
-    const renderIssues = issues.length > 0;
-
     const { expandedIssue } = this.state;
 
     const isExpanded = (otherIssue) => {
