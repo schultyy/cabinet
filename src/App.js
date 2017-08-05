@@ -60,7 +60,7 @@ class App extends Component {
     .then(resultSet => {
       this.setState({
         issues: resultSet,
-        selectedRepository: repository
+        selectedRepository: repository || null
       });
     });
   }
@@ -127,6 +127,8 @@ class App extends Component {
       reposClassNames = "master-detail hidden";
     }
 
+    const isMenuEnabled = this.state.selectedRepository ? true : false;
+
     return (
       <div className="App">
         <header>
@@ -155,6 +157,7 @@ class App extends Component {
             repositories={repositories}
           />
           <IssueList
+            isMenuEnabled={isMenuEnabled}
             networkState={connectivityStatus}
             issues={issues}
             onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}

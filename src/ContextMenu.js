@@ -9,7 +9,7 @@ export default class ContextMenu extends React.Component {
   }
 
   render() {
-    const { canSync } = this.props;
+    const { canSync, isMenuEnabled } = this.props;
 
     return (
       <div className="menu">
@@ -17,10 +17,19 @@ export default class ContextMenu extends React.Component {
           if (item.canRender()) {
             const clickHandler = item.clickHandler ? item.clickHandler : null;
 
-            const disabled = item.isEnabled ? item.isEnabled(canSync) : false;
+            const disabled = () => {
+              if(!isMenuEnabled) {
+                return true;
+              }
+              if (item.isEnabled) {
+                return item.isEnabled(canSync);
+              } else {
+                return false;
+              };
+            };
 
             return (
-              <button disabled={disabled} key={key} onClick={clickHandler}>
+              <button disabled={disabled()} key={key} onClick={clickHandler}>
                 {item.render()}
               </button>
             );
