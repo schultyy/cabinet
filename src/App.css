@@ -107,3 +107,7 @@
   width: 100%;
   justify-content: flex-start;
 }
+
+.master-detail.hidden {
+  display: none;
+}

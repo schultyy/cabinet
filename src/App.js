@@ -131,6 +131,7 @@ class App extends Component {
     else {
       configurationClassNames = "configuration visible";
       reposClassNames = "master-detail hidden";
+      networkConnectivityClassNames += " hidden";
     }
 
     const isMenuEnabled = this.state.selectedRepository ? true : false;
