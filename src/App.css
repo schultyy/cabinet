@@ -9,14 +9,22 @@
   width: 100%;
 }
 
+@keyframes header-background-color {
+  from {background-color: #FFFFFF;}
+  to { background-color: #616161; }
+}
+
 .App header h1 {
   text-align: left;
   text-decoration: underline;
-  background-color: #512DA8;
+  background-color: #616161;
   color: #FFFFFF;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 10px;
   width: 150px;
+  animation-name: header-background-color;
+  animation-duration: 4s;
+  animation-iteration-count: 1;
 }
 
 .App .connectivity-status {
@@ -27,12 +35,28 @@
   color: white;
 }
 
+@keyframes online-background-color {
+  from { background-color: #FF9800; }
+  to {background-color: #4CAF50;}
+}
+
 .App .connectivity-status.online {
   background-color: #4CAF50;
+  animation-name: online-background-color;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+@keyframes offline-background-color {
+  from {background-color: #4CAF50;}
+  to { background-color: #FF9800; }
 }
 
 .App .connectivity-status.offline {
   background-color: #FF9800;
+  animation-name: offline-background-color;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
 }
 
 .visible {
