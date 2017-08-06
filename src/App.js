@@ -85,7 +85,8 @@ class App extends Component {
     this.accessToken = this.refs.githubToken.value;
     saveToken(this.accessToken);
     this.setState({ hasToken: true });
-    this.facade = new Facade(this.accessToken);
+    this.facade.shutdown();
+    this.facade = new Facade(this.accessToken, this.onNetworkStatusChange.bind(this));
     this.getRepositories();
   }
 

@@ -22,6 +22,10 @@ export default class Facade {
     this.syncQueue = new SyncQueue(accessToken, networkStateChangedCallback);
   }
 
+  shutdown() {
+    this.syncQueue.shutdown();
+  }
+
   loadRepositories() {
     return this.dataContext.loadRepositories()
     .then(resultSet => {

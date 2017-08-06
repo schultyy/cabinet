@@ -9,13 +9,17 @@ export default class SyncQueue {
     window.addEventListener('online', this.onNetworkStatusChange.bind(this));
     window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
     this.jobFinishedCallback = jobFinishedCallback;
-    this.database.changes({
+    this.changes = this.database.changes({
       since: 'now',
       live: true,
       include_docs: true
     })
     .on('change', this.processDocument.bind(this));
     this.workOffQueue();
+  }
+
+  shutdown() {
+    this.changes.cancel();
   }
 
   jobCount() {
