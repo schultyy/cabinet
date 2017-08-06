@@ -13,6 +13,6 @@ It then the first 100 repositories which are available under your user's account
 
 ## Development
 
-* >= Node 6.10
+* Node 6.10 or greater
 * A Serviceworker-enabled browser
-* >= npm 5
+* npm 5 or greater
