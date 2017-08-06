@@ -147,6 +147,14 @@ class App extends Component {
         <div className={configurationClassNames}>
           <h3>Configure your GitHub OAuth token</h3>
           <div className="controls">
+            <a
+              href="https://github.com/settings/tokens/new"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Get your token here
+            </a>
+            <p>You need to grant full repo priviliges</p>
             <input type="text" ref="githubToken" />
             <input type="button"
                     value="Save Token"
