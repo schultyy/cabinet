@@ -19,6 +19,13 @@ export default class IssueOptions extends React.Component {
       return 'None';
     };
 
+    const buttonCaption = () => {
+      if (issue.state === "CLOSED") {
+        return "Open Issue";
+      }
+      return "Close Issue";
+    };
+
     return (
       <div className="issue-options">
         <div className="milestone-assignee">
@@ -26,7 +33,7 @@ export default class IssueOptions extends React.Component {
           <span><strong>Milestone: </strong>{milestone()}</span>
         </div>
         <ul className="menu">
-          <li><button onClick={() => onToggleIssueStatus(issue)}>Close issue</button></li>
+          <li><button onClick={() => onToggleIssueStatus(issue)}>{buttonCaption()}</button></li>
         </ul>
       </div>
     );
