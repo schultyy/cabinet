@@ -4,9 +4,10 @@ import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 import Repository from './Repository';
 import Issue from './Issue';
 import DataContext from './DataContext';
+import SyncQueue from './SyncQueue';
 
 export default class Facade {
-  constructor(accessToken) {
+  constructor(accessToken, networkStateChangedCallback) {
     this.apolloClient = new ApolloClient({
       networkInterface: createNetworkInterface({
         uri: 'https://api.github.com/graphql',
@@ -18,6 +19,7 @@ export default class Facade {
       })
     });
     this.dataContext = new DataContext();
+    this.syncQueue = new SyncQueue(accessToken, networkStateChangedCallback);
   }
 
   loadRepositories() {
@@ -94,5 +96,23 @@ export default class Facade {
     }))
     .then(documents => documents.map(doc => new Issue(doc)))
     .then(issues => issues.sort(Issue.comparator));
+  }
+
+  toggleIssueState(repository, issue) {
+    var updatedIssue;
+    if (issue.state === 'OPEN') {
+      updatedIssue = Object.assign(issue, { 'state': 'CLOSED' });
+    } else {
+      updatedIssue = Object.assign(issue, { 'state': 'OPEN' });
+    }
+
+    return this.dataContext.updateIssue(updatedIssue, 'state')
+    .then(() => {
+      return this.syncQueue.enqueue(repository, issue);
+    });
+  }
+
+  activeJobs() {
+    return this.syncQueue.jobCount();
   }
 }

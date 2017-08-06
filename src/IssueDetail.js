@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
+import IssueOptions from './IssueOptions';
 import './IssueDetail.css';
 
 export default class IssueDetail extends React.Component {
@@ -47,31 +48,24 @@ export default class IssueDetail extends React.Component {
     );
   }
 
+  renderIssueOptions() {
+    const { issue, onToggleIssueStatus } = this.props;
+
+    return (
+      <IssueOptions onToggleIssueStatus={onToggleIssueStatus} issue={issue} />
+    );
+  }
+
   renderIssueDetails() {
     const { issue } = this.props;
 
-    const assignees = () => {
-      if (issue.assignees && issue.assignees.length === 0) {
-        return 'None';
-      }
-      return issue.assignees.map(assignee => assignee.login).join(", ");
-    };
-
-    const milestone = () => {
-      if (issue.milestone) {
-        return issue.milestone;
-      }
-      return 'None';
-    };
-
     return (
       <div className="issue-details">
-        <div className="milestone-assignee">
-          <span><strong>Assignees: </strong>{assignees()}</span>
-          <span><strong>Milestone: </strong>{milestone()}</span>
+        <div className="content">
+          {this.renderIssueEntry(issue)}
+          {this.renderComments()}
         </div>
-        {this.renderIssueEntry(issue)}
-        {this.renderComments()}
+        {this.renderIssueOptions()}
       </div>
     );
   }

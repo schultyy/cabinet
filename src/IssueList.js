@@ -58,22 +58,15 @@ export default class IssueList extends React.Component {
       reloadIssues,
       selectedRepository,
       networkState,
+      onToggleIssueStatus,
+      isMenuEnabled
     } = this.props;
-
-    const renderIssues = issues.length > 0;
 
     const { expandedIssue } = this.state;
 
     const isExpanded = (otherIssue) => {
       return (expandedIssue && (expandedIssue.id === otherIssue.id));
     };
-
-    if (!renderIssues) {
-      return (
-        <div className="issues list">
-        </div>
-      );
-    }
 
     const issueClassname = (issue) => {
       if (isExpanded(issue)) {
@@ -87,11 +80,12 @@ export default class IssueList extends React.Component {
       return `issue-state ${state}`;
     };
 
-    const canSync= networkState === 'online';
+    const canSync = networkState === 'online';
 
     return (
       <div className="issues list">
         <IssueMenu
+          isMenuEnabled={isMenuEnabled}
           canSync={canSync}
           showClosedIssues={this.state.showClosedIssues}
           onHideClosedClick={this.hideClosedIssues.bind(this)}
@@ -111,7 +105,7 @@ export default class IssueList extends React.Component {
             </li>
           ))}
         </ul>
-        <IssueDetail issue={expandedIssue} />
+        <IssueDetail onToggleIssueStatus={onToggleIssueStatus} issue={expandedIssue} />
       </div>
     );
   }

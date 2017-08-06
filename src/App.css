@@ -6,18 +6,21 @@
 }
 
 .App header {
-  background-color: #512DA8;
   width: 100%;
-  color: #FFFFFF;
 }
 
 .App header h1 {
-  display: block;
-  text-align: center;
+  text-align: left;
+  text-decoration: underline;
+  background-color: #512DA8;
+  color: #FFFFFF;
+  border-radius: 2px;
+  padding: 10px;
+  width: 150px;
 }
 
 .App .connectivity-status {
-  width: 100%;
+  width: 150px;
   text-align: center;
   font-size: 20px;
   padding: 5px 0px;

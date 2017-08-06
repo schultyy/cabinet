@@ -81,6 +81,21 @@ export default class DataContext {
     return this.database.destroy();
   }
 
+  updateIssue(issue, field) {
+    if (!field) {
+      throw new Error('You must provide a field name');
+    }
+    return this.database
+    .get(issue.id)
+    .then((issueDoc) => {
+      const updatedFields = { [field]: issue[field] };
+      return this.database.put(Object.assign(issueDoc, updatedFields));
+    })
+    .catch((err) => {
+      console.error('Could not update issue', issue, err);
+    });
+  }
+
   _mapComments(issue) {
     return issue.comments.nodes;
   }

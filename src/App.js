@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import IssueList from './IssueList';
 import RepositoryList from './RepositoryList';
+import QueueIndicator from './QueueIndicator';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
 import './App.css';
@@ -11,14 +12,15 @@ class App extends Component {
     super();
 
     this.accessToken = getToken();
-    this.facade = new Facade(this.accessToken);
+    this.facade = new Facade(this.accessToken, this.onNetworkStatusChange.bind(this));
 
     this.state = {
       hasToken: !!this.accessToken,
       repositories: [],
       selectedRepository: null,
       issues: [],
-      connectivityStatus: null
+      connectivityStatus: null,
+      activeSyncJobs: 0
     };
   }
 
@@ -30,8 +32,12 @@ class App extends Component {
   }
 
   onNetworkStatusChange() {
-    this.setState({
-      connectivityStatus: navigator.onLine ? "online" : "offline"
+    this.facade.activeJobs()
+    .then(jobCount => {
+      this.setState({
+        connectivityStatus: navigator.onLine ? "online" : "offline",
+        activeSyncJobs: jobCount
+      });
     });
   }
 
@@ -57,7 +63,20 @@ class App extends Component {
     .then(resultSet => {
       this.setState({
         issues: resultSet,
-        selectedRepository: repository
+        selectedRepository: repository || null
+      });
+    });
+  }
+
+  onToggleIssueStatus(issue) {
+    this.facade.toggleIssueState(this.state.selectedRepository, issue)
+    .then(() => {
+      this.facade.loadIssuesForRepository(this.state.selectedRepository);
+      this.facade.activeJobs()
+      .then(jobCount => {
+        this.setState({
+          activeSyncJobs: jobCount
+        });
       });
     });
   }
@@ -99,7 +118,7 @@ class App extends Component {
   }
 
   render() {
-    const { issues, repositories, hasToken, connectivityStatus } = this.state;
+    const { issues, repositories, hasToken, connectivityStatus, activeSyncJobs } = this.state;
 
     var configurationClassNames;
     var reposClassNames;
@@ -113,6 +132,8 @@ class App extends Component {
       configurationClassNames = "configuration visible";
       reposClassNames = "master-detail hidden";
     }
+
+    const isMenuEnabled = this.state.selectedRepository ? true : false;
 
     return (
       <div className="App">
@@ -142,12 +163,15 @@ class App extends Component {
             repositories={repositories}
           />
           <IssueList
+            isMenuEnabled={isMenuEnabled}
             networkState={connectivityStatus}
             issues={issues}
+            onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
           />
         </div>
+        <QueueIndicator activeJobs={activeSyncJobs} />
       </div>
     );
   }

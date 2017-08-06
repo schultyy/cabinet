@@ -42,6 +42,7 @@ export default class RepositoryList extends React.Component {
       <div>
         <RepositoryMenu
           canSync={canSync}
+          isMenuEnabled={true}
           onUpdateRepositoriesClick={onUpdateRepositories}
         />
         <div className="repositories list">
