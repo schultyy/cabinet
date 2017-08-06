@@ -19,7 +19,7 @@
   line-height: 100%;
   width: auto;
   white-space: nowrap;
-  background-color: #512DA8;
+  background-color: #616161;
   color: #FFFFFF;
   font-weight: 100;
   font-size: 1em;
@@ -39,11 +39,10 @@
 }
 
 .menu button:hover {
-  background-color:#673AB7;
-  color: #757575;
+  color: #616161;
   border-radius: 2px;
   color: white;
   cursor: pointer;
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 17px 0 #9E9E9E;
   transition-delay: 0s;
 }
