@@ -3,39 +3,81 @@ import PouchDB from 'pouchdb';
 const BASE_URL = 'https://api.github.com';
 
 export default class SyncQueue {
-  constructor(accessToken) {
+  constructor(accessToken, jobFinishedCallback) {
     this.accessToken = accessToken;
-    this.jobs = [];
-    this.database = new PouchDB('offline-issues');
+    this.database = new PouchDB('offline-issues-queue');
     window.addEventListener('online', this.onNetworkStatusChange.bind(this));
     window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
-    this.jobFinishedCallback = null;
+    this.jobFinishedCallback = jobFinishedCallback;
+    this.database.changes({
+      since: 'now',
+      live: true,
+      include_docs: true
+    })
+    .on('change', this.processDocument.bind(this));
+    this.workOffQueue();
+  }
+
+  jobCount() {
+    return this.database
+            .allDocs()
+            .then((docs) => docs.rows.length);
+  }
+
+  workOffQueue() {
+    if(!navigator.onLine) {
+      return;
+    }
+    this.database
+    .allDocs({include_docs: true})
+    .then((resultSet) => {
+      resultSet.rows.forEach((row) => {
+        const { repository, issue } = row.doc;
+        this.run(repository, issue)
+        .then(() => {
+          return this.database.remove(row.doc);
+        })
+        .then(() => {
+          if(this.jobFinishedCallback) {
+            this.jobFinishedCallback();
+          }
+        });
+      });
+    });
   }
 
   enqueue(repository, issue) {
-    this.jobs.push({
+    this.database.put({
+      _id: `${repository.id + issue.id}`,
       repository,
       issue
+    })
+    .catch((error) => {
+      console.error(error);
     });
-    this.workOff();
   }
 
-  workOff() {
+  processDocument(change) {
+    if(change.deleted === true) {
+      return;
+    }
     if(navigator.onLine) {
-      while (true) {
-        const job = this.jobs.shift();
-        if (!job) {
-          break;
+      const { repository, issue } = change.doc;
+      this.run(repository, issue)
+      .then(() => {
+        return this.database.remove(change.doc);
+      })
+      .then(() => {
+        if(this.jobFinishedCallback) {
+          this.jobFinishedCallback();
         }
-        const { repository, issue } = job;
-        this.run(repository, issue);
-      }
+      });
     }
   }
 
   onNetworkStatusChange() {
     if(navigator.onLine) {
-      this.workOff();
+      this.workOffQueue();
     }
   }
 
@@ -53,11 +95,6 @@ export default class SyncQueue {
     const url = `${BASE_URL}/repos/${repository.nameWithOwner}/issues/${issue.number}`;
     const fetchRequest = new Request(url, requestParamenters);
 
-    return fetch(fetchRequest)
-    .then(() => {
-      if(this.jobFinishedCallback) {
-        this.jobFinishedCallback();
-      }
-    });
+    return fetch(fetchRequest);
   }
 }

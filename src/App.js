@@ -32,9 +32,12 @@ class App extends Component {
   }
 
   onNetworkStatusChange() {
-    this.setState({
-      connectivityStatus: navigator.onLine ? "online" : "offline",
-      activeSyncJobs: this.facade.activeJobs()
+    this.facade.activeJobs()
+    .then(jobCount => {
+      this.setState({
+        connectivityStatus: navigator.onLine ? "online" : "offline",
+        activeSyncJobs: jobCount
+      });
     });
   }
 
@@ -69,8 +72,11 @@ class App extends Component {
     this.facade.toggleIssueState(this.state.selectedRepository, issue)
     .then(() => {
       this.facade.loadIssuesForRepository(this.state.selectedRepository);
-      this.setState({
-        activeSyncJobs: this.facade.activeJobs()
+      this.facade.activeJobs()
+      .then(jobCount => {
+        this.setState({
+          activeSyncJobs: jobCount
+        });
       });
     });
   }

@@ -108,11 +108,11 @@ export default class Facade {
 
     return this.dataContext.updateIssue(updatedIssue, 'state')
     .then(() => {
-      return Promise.resolve(this.syncQueue.enqueue(repository, issue));
+      return this.syncQueue.enqueue(repository, issue);
     });
   }
 
   activeJobs() {
-    return this.syncQueue.jobs.length;
+    return this.syncQueue.jobCount();
   }
 }
