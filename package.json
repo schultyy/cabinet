@@ -24,6 +24,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages --repo https://$GH_TOKEN@github.com/schultyy/issue-trecker.git -d build"
+    "deploy": "gh-pages --repo git@github.com:schultyy/cabinet.git -d build"
   }
 }
