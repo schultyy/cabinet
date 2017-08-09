@@ -59,7 +59,8 @@ export default class IssueList extends React.Component {
       selectedRepository,
       networkState,
       onToggleIssueStatus,
-      isMenuEnabled
+      isMenuEnabled,
+      newIssue
     } = this.props;
 
     const { expandedIssue } = this.state;
@@ -91,6 +92,7 @@ export default class IssueList extends React.Component {
           onHideClosedClick={this.hideClosedIssues.bind(this)}
           onShowClosedClick={this.showClosedIssues.bind(this)}
           onUpdateIssuesClick={() => reloadIssues(selectedRepository)}
+          onNewIssueClick={newIssue}
         />
         <ul>
           {issues.map(issue => (

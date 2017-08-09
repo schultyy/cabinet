@@ -118,6 +118,10 @@ class App extends Component {
     .catch(error => console.error(error));
   }
 
+  newIssue() {
+    console.log('create new issue');
+  }
+
   render() {
     const { issues, repositories, hasToken, connectivityStatus, activeSyncJobs } = this.state;
 
@@ -179,6 +183,7 @@ class App extends Component {
             onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
+            newIssue={this.newIssue.bind(this)}
           />
         </div>
         <QueueIndicator activeJobs={activeSyncJobs} />
