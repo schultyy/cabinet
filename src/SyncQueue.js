@@ -96,10 +96,7 @@ export default class SyncQueue {
   _createIssue({repository, issue}) {
     const path = `/repos/${repository.nameWithOwner}/issues`;
     const request = new GitHubRequest('POST', this.accessToken, issue, path);
-    return request.perform()
-    .then((response) => {
-      console.log("GH RESPONSE", response);
-    });
+    return request.perform();
   }
 
   _toggleState({repository, issue}) {
