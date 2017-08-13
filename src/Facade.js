@@ -131,7 +131,7 @@ export default class Facade {
     }
 
     if(!issue.body) {
-      return Promise.reject({ message: "Issue needs a body", issue });
+      issue.body = null;
     }
 
     issue.id = Date.now().toString();
