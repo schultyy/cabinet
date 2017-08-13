@@ -4,6 +4,18 @@ import NewIssue from './NewIssue';
 import { IssueMenu } from './CustomMenu';
 import './IssueList.css';
 
+const IssueListItem = ({issue, issueClassname, onIssueClick, issueStateClassname}) => (
+  <li key={issue.id} className="issue">
+    <button
+      className={issueClassname(issue)}
+      onClick={() => onIssueClick(issue)}
+    >
+      <span className={issueStateClassname(issue)}>{issue.state}</span>
+      <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
+    </button>
+  </li>
+);
+
 export default class IssueList extends React.Component {
 
   constructor() {
@@ -99,15 +111,12 @@ export default class IssueList extends React.Component {
     return (
       <ul>
         {issues.map(issue => (
-          <li key={issue.id} className="issue">
-            <button
-              className={issueClassname(issue)}
-              onClick={() => this.onIssueClick(issue)}
-            >
-              <span className={issueStateClassname(issue)}>{issue.state}</span>
-              <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
-            </button>
-          </li>
+          <IssueListItem
+            issue={issue}
+            onIssueClick={this.onIssueClick.bind(this)}
+            issueClassname={issueClassname}
+            issueStateClassname={issueStateClassname}
+          />
         ))}
       </ul>
     );
