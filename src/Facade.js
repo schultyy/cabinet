@@ -5,6 +5,10 @@ import Repository from './Repository';
 import Issue from './Issue';
 import DataContext from './DataContext';
 import SyncQueue from './SyncQueue';
+import {
+  TOGGLE_STATE,
+  CREATE_ISSUE
+} from './constants';
 
 export default class Facade {
   constructor(accessToken, networkStateChangedCallback) {
@@ -122,7 +126,7 @@ export default class Facade {
         _id: `${repository.id + issue.id + issue.state}`,
         repository,
         issue,
-        type: "TOGGLE_STATE"
+        type: TOGGLE_STATE
       });
     });
   }
@@ -160,7 +164,7 @@ export default class Facade {
           _id: `CREATE_${repository.id + issue.id}`,
           repository,
           issue,
-          type: "CREATE_ISSUE"
+          type: CREATE_ISSUE
         });
       });
     });

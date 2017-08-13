@@ -5,6 +5,9 @@ import QueueIndicator from './QueueIndicator';
 import CurrentUser from './CurrentUser';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
+import {
+  CREATE_ISSUE
+} from './constants';
 import './App.css';
 
 class App extends Component {
@@ -54,7 +57,7 @@ class App extends Component {
         connectivityStatus: navigator.onLine ? "online" : "offline",
         activeSyncJobs: jobCount
       });
-      if(job && (job.type === 'CREATE_ISSUE')) {
+      if(job && (job.type === CREATE_ISSUE)) {
         this.reloadIssuesForRepository(job.repository);
       }
     });

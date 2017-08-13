@@ -1,5 +1,9 @@
 import PouchDB from 'pouchdb';
 import GitHubRequest from './GitHubRequest';
+import {
+  CREATE_ISSUE,
+  TOGGLE_STATE
+} from './constants';
 
 export default class SyncQueue {
   constructor(accessToken, jobFinishedCallback) {
@@ -84,9 +88,9 @@ export default class SyncQueue {
 
   _dispatch(job) {
     switch(job.type) {
-      case 'TOGGLE_STATE':
+      case TOGGLE_STATE:
         return this._toggleState(job);
-      case 'CREATE_ISSUE':
+      case CREATE_ISSUE:
         return this._createIssue(job);
       default:
         throw new Error(`Unrecognized job type ${job.type}`);
