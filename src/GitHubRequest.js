@@ -30,6 +30,7 @@ export default class GitHubRequest {
     const headers = new Headers();
     headers.append("Authorization", `token ${this.accessToken}`);
     headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/vnd.github.v3+json");
     return headers;
   }
 }

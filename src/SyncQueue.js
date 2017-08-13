@@ -35,8 +35,7 @@ export default class SyncQueue {
     .allDocs({include_docs: true})
     .then((resultSet) => {
       resultSet.rows.forEach((row) => {
-        const { repository, issue } = row.doc;
-        this.run(repository, issue)
+        this._dispatch(row.doc)
         .then(() => {
           return this.database.remove(row.doc);
         })
@@ -65,8 +64,7 @@ export default class SyncQueue {
       return;
     }
     if(navigator.onLine) {
-      const { repository, issue } = change.doc;
-      this.run(repository, issue)
+      this._dispatch(change.doc)
       .then(() => {
         return this.database.remove(change.doc);
       })
@@ -84,7 +82,27 @@ export default class SyncQueue {
     }
   }
 
-  run(repository, issue) {
+  _dispatch(job) {
+    switch(job.type) {
+      case 'TOGGLE_STATE':
+        return this._toggleState(job);
+      case 'CREATE_ISSUE':
+        return this._createIssue(job);
+      default:
+        throw new Error(`Unrecognized job type ${job.type}`);
+    }
+  }
+
+  _createIssue({repository, issue}) {
+    const path = `/repos/${repository.nameWithOwner}/issues`;
+    const request = new GitHubRequest('POST', this.accessToken, issue, path);
+    return request.perform()
+    .then((response) => {
+      console.log("GH RESPONSE", response);
+    });
+  }
+
+  _toggleState({repository, issue}) {
     const payload = {state: issue.state};
     const path = `/repos/${repository.nameWithOwner}/issues/${issue.number}`;
     const request = new GitHubRequest('PATCH', this.accessToken, payload, path);

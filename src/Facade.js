@@ -113,7 +113,7 @@ export default class Facade {
     return this.dataContext.updateIssue(updatedIssue, 'state')
     .then(() => {
       return this.syncQueue.enqueue({
-        _id: `${repository.id + issue.id}`,
+        _id: `${repository.id + issue.id + issue.state}`,
         repository,
         issue,
         type: "TOGGLE_STATE"
@@ -148,7 +148,15 @@ export default class Facade {
         avatarUrl: viewer.avatarUrl
       };
 
-      return this.dataContext.saveOrUpdateIssue(issue, repository);
+      return this.dataContext.saveOrUpdateIssue(issue, repository)
+      .then(() => {
+        return this.syncQueue.enqueue({
+          _id: `CREATE_${repository.id + issue.id}`,
+          repository,
+          issue,
+          type: "CREATE_ISSUE"
+        });
+      });
     });
   }
 
