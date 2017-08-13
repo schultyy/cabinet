@@ -11,7 +11,7 @@ const IssueListItem = ({issue, issueClassname, onIssueClick, issueStateClassname
       onClick={() => onIssueClick(issue)}
     >
       <span className={issueStateClassname(issue)}>{issue.state}</span>
-      <span><span className="number">{`# ${issue.number}`}</span>{issue.title}</span>
+      <span><span className="number">{issue.number > 0 ? `# ${issue.number}` : null}</span>{issue.title}</span>
     </button>
   </li>
 );

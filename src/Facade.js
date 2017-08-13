@@ -119,4 +119,23 @@ export default class Facade {
   activeJobs() {
     return this.syncQueue.jobCount();
   }
+
+  createNewIssue(issue, repository) {
+    if(!issue.title) {
+      return Promise.reject({message: "Issue needs a title", issue });
+    }
+
+    if(!issue.description) {
+      return Promise.reject({ message: "Issue needs a description", issue });
+    }
+
+    issue.id = Date.now().toString();
+    issue.number = 0;
+    issue.state = "OPEN";
+    issue.createdAt = new Date();
+    issue.author = "";
+    issue.comments = [];
+
+    return this.dataContext.saveOrUpdateIssue(issue, repository);
+  }
 }

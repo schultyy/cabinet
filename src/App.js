@@ -119,7 +119,18 @@ class App extends Component {
   }
 
   onCreateNewIssue(issue) {
-    console.log('new issue', issue);
+    const { selectedRepository } = this.state;
+
+    this.facade.createNewIssue(issue, selectedRepository)
+    .then(() => {
+      this.facade.loadIssuesForRepository(selectedRepository);
+      this.facade.activeJobs()
+      .then(jobCount => {
+        this.setState({
+          activeSyncJobs: jobCount
+        });
+      });
+    });
   }
 
   render() {
