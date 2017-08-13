@@ -49,6 +49,13 @@ export default class DataContext {
     });
   }
 
+  loadLocalIssuesForRepository(repository) {
+    return this.loadIssuesForRepository(repository)
+    .then(issues => {
+      return issues.docs.filter(issue => issue.number === 0);
+    });
+  }
+
   saveOrUpdateIssue(issue, repository) {
     return this.database
     .get(issue.id)
@@ -94,6 +101,10 @@ export default class DataContext {
     .catch((err) => {
       console.error('Could not update issue', issue, err);
     });
+  }
+
+  deleteDocuments(documents) {
+    return Promise.all(documents.map((document) => this.database.remove(document)));
   }
 
   loadViewer() {

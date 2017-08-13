@@ -41,7 +41,7 @@ export default class SyncQueue {
         })
         .then(() => {
           if(this.jobFinishedCallback) {
-            this.jobFinishedCallback();
+            this.jobFinishedCallback(row.doc);
           }
         });
       });
@@ -70,7 +70,7 @@ export default class SyncQueue {
       })
       .then(() => {
         if(this.jobFinishedCallback) {
-          this.jobFinishedCallback();
+          this.jobFinishedCallback(change.doc);
         }
       });
     }

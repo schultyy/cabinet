@@ -47,13 +47,16 @@ class App extends Component {
     });
   }
 
-  onNetworkStatusChange() {
+  onNetworkStatusChange(job) {
     this.facade.activeJobs()
     .then(jobCount => {
       this.setState({
         connectivityStatus: navigator.onLine ? "online" : "offline",
         activeSyncJobs: jobCount
       });
+      if(job && (job.type === 'CREATE_ISSUE')) {
+        this.reloadIssuesForRepository(job.repository);
+      }
     });
   }
 

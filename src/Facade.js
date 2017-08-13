@@ -78,7 +78,13 @@ export default class Facade {
   }
 
   updateIssuesForRepository(repository) {
-    return this.fetchIssuesFromGitHub(repository);
+    return this.clearLocalIssues(repository)
+               .then(() => this.fetchIssuesFromGitHub(repository));
+  }
+
+  clearLocalIssues(repository) {
+    return this.dataContext.loadLocalIssuesForRepository(repository)
+                            .then((issues) => this.dataContext.deleteDocuments(issues));
   }
 
   loadIssuesForRepository(repository) {
