@@ -125,8 +125,8 @@ export default class Facade {
       return Promise.reject({message: "Issue needs a title", issue });
     }
 
-    if(!issue.description) {
-      return Promise.reject({ message: "Issue needs a description", issue });
+    if(!issue.body) {
+      return Promise.reject({ message: "Issue needs a body", issue });
     }
 
     issue.id = Date.now().toString();

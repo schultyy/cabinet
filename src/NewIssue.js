@@ -10,7 +10,7 @@ export default class NewIssue extends React.Component {
 
     const newIssue = {
       title: title,
-      description: description
+      body: description
     };
 
     onSubmitClick(newIssue);
