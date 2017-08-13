@@ -1,6 +1,5 @@
 import PouchDB from 'pouchdb';
-
-const BASE_URL = 'https://api.github.com';
+import GitHubRequest from './GitHubRequest';
 
 export default class SyncQueue {
   constructor(accessToken, jobFinishedCallback) {
@@ -86,19 +85,9 @@ export default class SyncQueue {
   }
 
   run(repository, issue) {
-    const headers = new Headers();
-    headers.append("Authorization", `token ${this.accessToken}`);
-    headers.append("Content-Type", "application/json");
-
-    const requestParamenters = {
-      method: 'PATCH',
-      headers: headers,
-      mode: 'cors',
-      body: JSON.stringify({state: issue.state})
-    };
-    const url = `${BASE_URL}/repos/${repository.nameWithOwner}/issues/${issue.number}`;
-    const fetchRequest = new Request(url, requestParamenters);
-
-    return fetch(fetchRequest);
+    const payload = {state: issue.state};
+    const path = `/repos/${repository.nameWithOwner}/issues/${issue.number}`;
+    const request = new GitHubRequest('PATCH', this.accessToken, payload, path);
+    return request.perform();
   }
 }
