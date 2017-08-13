@@ -50,12 +50,12 @@ export default class SyncQueue {
     });
   }
 
-  enqueue(repository, issue) {
-    this.database.put({
-      _id: `${repository.id + issue.id}`,
-      repository,
-      issue
-    })
+  enqueue(job) {
+    if(!job.type) {
+      return Promise.reject(`Job ${job.id} must have a type`);
+    }
+
+    return this.database.put(job)
     .catch((error) => {
       console.error(error);
     });

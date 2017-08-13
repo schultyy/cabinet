@@ -112,7 +112,12 @@ export default class Facade {
 
     return this.dataContext.updateIssue(updatedIssue, 'state')
     .then(() => {
-      return this.syncQueue.enqueue(repository, issue);
+      return this.syncQueue.enqueue({
+        _id: `${repository.id + issue.id}`,
+        repository,
+        issue,
+        type: "TOGGLE_STATE"
+      });
     });
   }
 
