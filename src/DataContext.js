@@ -108,7 +108,7 @@ export default class DataContext {
   }
 
   _filterAssignees(issue) {
-    if(!issue.assignees.nodes) {
+    if(!issue.assignees || !issue.assignees.nodes) {
       return [];
     }
 
