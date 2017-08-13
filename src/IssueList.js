@@ -23,8 +23,7 @@ export default class IssueList extends React.Component {
 
     this.state = {
       expandedIssue: null,
-      showClosedIssues: false,
-      newIssueDialogueOpen: false
+      showClosedIssues: false
     };
   }
 
@@ -65,24 +64,15 @@ export default class IssueList extends React.Component {
     return issues.filter(i => i.state !== 'CLOSED');
   }
 
-  abortNewIssue() {
-    this.setState({
-      newIssueDialogueOpen: false
-    });
-  }
-
-  showNewIssue() {
-    this.setState({
-      newIssueDialogueOpen: true
-    });
-  }
-
   renderNewIssueDialogue() {
-    const { onCreateNewIssue } = this.props;
+    const {
+      onCreateNewIssue,
+      abortNewIssue
+    } = this.props;
 
     return (
       <NewIssue
-        onCancelClick={this.abortNewIssue.bind(this)}
+        onCancelClick={abortNewIssue}
         onSubmitClick={onCreateNewIssue}
       />
     );
@@ -128,10 +118,12 @@ export default class IssueList extends React.Component {
       selectedRepository,
       networkState,
       onToggleIssueStatus,
-      isMenuEnabled
+      isMenuEnabled,
+      newIssueDialogueOpen,
+      showNewIssue
     } = this.props;
 
-    const { expandedIssue, newIssueDialogueOpen } = this.state;
+    const { expandedIssue } = this.state;
 
     const canSync = networkState === 'online';
 
@@ -144,7 +136,7 @@ export default class IssueList extends React.Component {
           onHideClosedClick={this.hideClosedIssues.bind(this)}
           onShowClosedClick={this.showClosedIssues.bind(this)}
           onUpdateIssuesClick={() => reloadIssues(selectedRepository)}
-          onNewIssueClick={this.showNewIssue.bind(this)}
+          onNewIssueClick={showNewIssue}
         />
         {newIssueDialogueOpen ? this.renderNewIssueDialogue() : null}
         {!newIssueDialogueOpen ? this.renderIssueList() : null }

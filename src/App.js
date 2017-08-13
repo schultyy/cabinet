@@ -22,7 +22,8 @@ class App extends Component {
       issues: [],
       connectivityStatus: null,
       activeSyncJobs: 0,
-      viewer: null
+      viewer: null,
+      newIssueDialogueOpen: false
     };
   }
 
@@ -148,6 +149,18 @@ class App extends Component {
     });
   }
 
+  abortNewIssue() {
+    this.setState({
+      newIssueDialogueOpen: false
+    });
+  }
+
+  showNewIssue() {
+    this.setState({
+      newIssueDialogueOpen: true
+    });
+  }
+
   render() {
     const {
       issues,
@@ -155,7 +168,8 @@ class App extends Component {
       hasToken,
       connectivityStatus,
       activeSyncJobs,
-      viewer
+      viewer,
+      newIssueDialogueOpen
     } = this.state;
 
     var configurationClassNames;
@@ -211,9 +225,12 @@ class App extends Component {
             repositories={repositories}
           />
           <IssueList
+            abortNewIssue={this.abortNewIssue.bind(this)}
+            showNewIssue={this.showNewIssue.bind(this)}
             isMenuEnabled={isMenuEnabled}
             networkState={connectivityStatus}
             issues={issues}
+            newIssueDialogueOpen={newIssueDialogueOpen}
             onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
