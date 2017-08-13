@@ -5,7 +5,7 @@ import { IssueMenu } from './CustomMenu';
 import './IssueList.css';
 
 const IssueListItem = ({issue, issueClassname, onIssueClick, issueStateClassname}) => (
-  <li key={issue.id} className="issue">
+  <li className="issue">
     <button
       className={issueClassname(issue)}
       onClick={() => onIssueClick(issue)}
@@ -102,6 +102,7 @@ export default class IssueList extends React.Component {
       <ul>
         {issues.map(issue => (
           <IssueListItem
+            key={issue.id}
             issue={issue}
             onIssueClick={this.onIssueClick.bind(this)}
             issueClassname={issueClassname}
