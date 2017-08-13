@@ -96,6 +96,21 @@ export default class DataContext {
     });
   }
 
+  loadViewer() {
+    return this.database.get('viewer');
+  }
+
+  saveViewerData(viewer) {
+    const document = {
+      _id: 'viewer',
+      login: viewer.login,
+      location: viewer.location
+    };
+
+    return this.database.put(document)
+    .then(() => this.database.get('viewer'));
+  }
+
   _mapComments(issue) {
     if(issue.comments.nodes) {
       return issue.comments.nodes;

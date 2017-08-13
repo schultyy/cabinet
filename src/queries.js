@@ -1,3 +1,10 @@
+export const getViewerDataQuery = `query getViewerData {
+  viewer {
+    login,
+    location
+  }
+}`;
+
 export const getRepositoriesQuery = `query getRepos {
   viewer {
     repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}, isFork: false) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import IssueList from './IssueList';
 import RepositoryList from './RepositoryList';
 import QueueIndicator from './QueueIndicator';
+import CurrentUser from './CurrentUser';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
 import './App.css';
@@ -20,15 +21,29 @@ class App extends Component {
       selectedRepository: null,
       issues: [],
       connectivityStatus: null,
-      activeSyncJobs: 0
+      activeSyncJobs: 0,
+      viewer: null
     };
   }
 
   componentDidMount() {
+    this.getViewerData();
     this.getRepositories();
     this.onNetworkStatusChange();
     window.addEventListener('online', this.onNetworkStatusChange.bind(this));
     window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
+  }
+
+  getViewerData() {
+    this.facade.getViewerData()
+    .then((viewerResult) => {
+      this.setState({
+        viewer: {
+          login: viewerResult.login,
+          location: viewerResult.location
+        }
+      });
+    });
   }
 
   onNetworkStatusChange() {
@@ -134,7 +149,14 @@ class App extends Component {
   }
 
   render() {
-    const { issues, repositories, hasToken, connectivityStatus, activeSyncJobs } = this.state;
+    const {
+      issues,
+      repositories,
+      hasToken,
+      connectivityStatus,
+      activeSyncJobs,
+      viewer
+    } = this.state;
 
     var configurationClassNames;
     var reposClassNames;
@@ -156,6 +178,7 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>Cabinet</h1>
+          <CurrentUser viewer={viewer} />
         </header>
         <div className={networkConnectivityClassNames}>
           {connectivityStatus}

@@ -1,6 +1,6 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
-import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
+import { getViewerDataQuery, getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 import Repository from './Repository';
 import Issue from './Issue';
 import DataContext from './DataContext';
@@ -137,5 +137,22 @@ export default class Facade {
     issue.comments = [];
 
     return this.dataContext.saveOrUpdateIssue(issue, repository);
+  }
+
+  getViewerData() {
+    return this.dataContext.loadViewer()
+    .catch((error) => {
+      if (error.status === 404 && error.name === 'not_found') {
+        return this.apolloClient.query({
+          query: gql(getViewerDataQuery)
+        })
+        .then((result) => result.data.viewer)
+        .then(viewer => {
+          return this.dataContext.saveViewerData(viewer);
+        });
+      } else {
+        return Promise.reject(error);
+      }
+    });
   }
 }
