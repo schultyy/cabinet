@@ -97,7 +97,11 @@ export default class DataContext {
   }
 
   _mapComments(issue) {
-    return issue.comments.nodes;
+    if(issue.comments.nodes) {
+      return issue.comments.nodes;
+    } else {
+      return [];
+    }
   }
 
   _getMilestone(issue) {
