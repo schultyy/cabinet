@@ -1,6 +1,7 @@
 export const getViewerDataQuery = `query getViewerData {
   viewer {
     login,
+    avatarUrl,
     location
   }
 }`;

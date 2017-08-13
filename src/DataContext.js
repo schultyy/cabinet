@@ -104,7 +104,8 @@ export default class DataContext {
     const document = {
       _id: 'viewer',
       login: viewer.login,
-      location: viewer.location
+      location: viewer.location,
+      avatarUrl: viewer.avatarUrl
     };
 
     return this.database.put(document)

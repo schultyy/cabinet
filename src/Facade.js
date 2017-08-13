@@ -136,7 +136,15 @@ export default class Facade {
     issue.author = "";
     issue.comments = [];
 
-    return this.dataContext.saveOrUpdateIssue(issue, repository);
+    return this.getViewerData()
+    .then((viewer) => {
+      issue.author = {
+        login: viewer.login,
+        avatarUrl: viewer.avatarUrl
+      };
+
+      return this.dataContext.saveOrUpdateIssue(issue, repository);
+    });
   }
 
   getViewerData() {
