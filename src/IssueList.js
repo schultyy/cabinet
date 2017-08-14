@@ -4,6 +4,15 @@ import NewIssue from './NewIssue';
 import { IssueMenu } from './CustomMenu';
 import './IssueList.css';
 
+const IssueComparator = (leftIssue, rightIssue) => {
+  if(leftIssue.number > rightIssue.number) {
+    return -1;
+  } else if (leftIssue.number < rightIssue.number) {
+    return 1;
+  }
+  return 0;
+};
+
 const IssueListItem = ({issue, issueClassname, onIssueClick, issueStateClassname}) => (
   <li className="issue">
     <button
@@ -61,7 +70,8 @@ export default class IssueList extends React.Component {
       return issues;
     }
 
-    return issues.filter(i => i.state !== 'CLOSED');
+    return issues.filter(i => i.state !== 'CLOSED')
+                 .sort(IssueComparator);
   }
 
   renderNewIssueDialogue() {
