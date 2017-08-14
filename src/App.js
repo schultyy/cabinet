@@ -120,7 +120,8 @@ class App extends Component {
     this.facade.loadIssuesForRepository(repository)
     .then(resultSet => {
       this.setState({
-        issues: resultSet
+        issues: resultSet,
+        newIssueDialogueOpen: false
       });
     });
   }

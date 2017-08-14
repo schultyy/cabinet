@@ -2,6 +2,11 @@ import React from 'react';
 import './NewIssue.css';
 
 export default class NewIssue extends React.Component {
+  componentDidMount() {
+    this.refs.title.value = "";
+    this.refs.description.value = "";
+  }
+
   onSubmitClick() {
     const { onSubmitClick } = this.props;
 
