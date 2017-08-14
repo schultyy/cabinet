@@ -26,7 +26,8 @@ export class IssueMenu extends ContextMenu {
       showClosedIssues,
       onHideClosedClick,
       onShowClosedClick,
-      onUpdateIssuesClick
+      onUpdateIssuesClick,
+      onNewIssueClick
     } = this.props;
 
     return [
@@ -58,6 +59,17 @@ export class IssueMenu extends ContextMenu {
           <div>
             <i className="fa fa-refresh" aria-hidden="true"></i>
             Reload issues
+          </div>
+        )
+      },
+      {
+        canRender: () => true,
+        clickHandler: onNewIssueClick,
+        isEnabled: (canSync) => false,
+        render: (key) => (
+          <div>
+            <i className="fa fa-plus-circle" aria-hidden="true"></i>
+            New issue
           </div>
         )
       }

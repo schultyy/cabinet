@@ -49,6 +49,13 @@ export default class DataContext {
     });
   }
 
+  loadLocalIssuesForRepository(repository) {
+    return this.loadIssuesForRepository(repository)
+    .then(issues => {
+      return issues.docs.filter(issue => issue.number === 0);
+    });
+  }
+
   saveOrUpdateIssue(issue, repository) {
     return this.database
     .get(issue.id)
@@ -96,8 +103,32 @@ export default class DataContext {
     });
   }
 
+  deleteDocuments(documents) {
+    return Promise.all(documents.map((document) => this.database.remove(document)));
+  }
+
+  loadViewer() {
+    return this.database.get('viewer');
+  }
+
+  saveViewerData(viewer) {
+    const document = {
+      _id: 'viewer',
+      login: viewer.login,
+      location: viewer.location,
+      avatarUrl: viewer.avatarUrl
+    };
+
+    return this.database.put(document)
+    .then(() => this.database.get('viewer'));
+  }
+
   _mapComments(issue) {
-    return issue.comments.nodes;
+    if(issue.comments.nodes) {
+      return issue.comments.nodes;
+    } else {
+      return [];
+    }
   }
 
   _getMilestone(issue) {
@@ -108,7 +139,7 @@ export default class DataContext {
   }
 
   _filterAssignees(issue) {
-    if(!issue.assignees.nodes) {
+    if(!issue.assignees || !issue.assignees.nodes) {
       return [];
     }
 

@@ -1,6 +1,9 @@
 import PouchDB from 'pouchdb';
-
-const BASE_URL = 'https://api.github.com';
+import GitHubRequest from './GitHubRequest';
+import {
+  CREATE_ISSUE,
+  TOGGLE_STATE
+} from './constants';
 
 export default class SyncQueue {
   constructor(accessToken, jobFinishedCallback) {
@@ -36,26 +39,25 @@ export default class SyncQueue {
     .allDocs({include_docs: true})
     .then((resultSet) => {
       resultSet.rows.forEach((row) => {
-        const { repository, issue } = row.doc;
-        this.run(repository, issue)
+        this._dispatch(row.doc)
         .then(() => {
           return this.database.remove(row.doc);
         })
         .then(() => {
           if(this.jobFinishedCallback) {
-            this.jobFinishedCallback();
+            this.jobFinishedCallback(row.doc);
           }
         });
       });
     });
   }
 
-  enqueue(repository, issue) {
-    this.database.put({
-      _id: `${repository.id + issue.id}`,
-      repository,
-      issue
-    })
+  enqueue(job) {
+    if(!job.type) {
+      return Promise.reject(`Job ${job.id} must have a type`);
+    }
+
+    return this.database.put(job)
     .catch((error) => {
       console.error(error);
     });
@@ -66,14 +68,13 @@ export default class SyncQueue {
       return;
     }
     if(navigator.onLine) {
-      const { repository, issue } = change.doc;
-      this.run(repository, issue)
+      this._dispatch(change.doc)
       .then(() => {
         return this.database.remove(change.doc);
       })
       .then(() => {
         if(this.jobFinishedCallback) {
-          this.jobFinishedCallback();
+          this.jobFinishedCallback(change.doc);
         }
       });
     }
@@ -85,20 +86,27 @@ export default class SyncQueue {
     }
   }
 
-  run(repository, issue) {
-    const headers = new Headers();
-    headers.append("Authorization", `token ${this.accessToken}`);
-    headers.append("Content-Type", "application/json");
+  _dispatch(job) {
+    switch(job.type) {
+      case TOGGLE_STATE:
+        return this._toggleState(job);
+      case CREATE_ISSUE:
+        return this._createIssue(job);
+      default:
+        throw new Error(`Unrecognized job type ${job.type}`);
+    }
+  }
 
-    const requestParamenters = {
-      method: 'PATCH',
-      headers: headers,
-      mode: 'cors',
-      body: JSON.stringify({state: issue.state})
-    };
-    const url = `${BASE_URL}/repos/${repository.nameWithOwner}/issues/${issue.number}`;
-    const fetchRequest = new Request(url, requestParamenters);
+  _createIssue({repository, issue}) {
+    const path = `/repos/${repository.nameWithOwner}/issues`;
+    const request = new GitHubRequest('POST', this.accessToken, issue, path);
+    return request.perform();
+  }
 
-    return fetch(fetchRequest);
+  _toggleState({repository, issue}) {
+    const payload = {state: issue.state};
+    const path = `/repos/${repository.nameWithOwner}/issues/${issue.number}`;
+    const request = new GitHubRequest('PATCH', this.accessToken, payload, path);
+    return request.perform();
   }
 }

@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import IssueList from './IssueList';
 import RepositoryList from './RepositoryList';
 import QueueIndicator from './QueueIndicator';
+import CurrentUser from './CurrentUser';
 import { saveToken, getToken } from './tokenStore';
 import Facade from './Facade';
+import {
+  CREATE_ISSUE
+} from './constants';
 import './App.css';
 
 class App extends Component {
@@ -20,24 +24,42 @@ class App extends Component {
       selectedRepository: null,
       issues: [],
       connectivityStatus: null,
-      activeSyncJobs: 0
+      activeSyncJobs: 0,
+      viewer: null,
+      newIssueDialogueOpen: false
     };
   }
 
   componentDidMount() {
+    this.getViewerData();
     this.getRepositories();
     this.onNetworkStatusChange();
     window.addEventListener('online', this.onNetworkStatusChange.bind(this));
     window.addEventListener('offline', this.onNetworkStatusChange.bind(this));
   }
 
-  onNetworkStatusChange() {
+  getViewerData() {
+    this.facade.getViewerData()
+    .then((viewerResult) => {
+      this.setState({
+        viewer: {
+          login: viewerResult.login,
+          location: viewerResult.location
+        }
+      });
+    });
+  }
+
+  onNetworkStatusChange(job) {
     this.facade.activeJobs()
     .then(jobCount => {
       this.setState({
         connectivityStatus: navigator.onLine ? "online" : "offline",
         activeSyncJobs: jobCount
       });
+      if(job && (job.type === CREATE_ISSUE)) {
+        this.reloadIssuesForRepository(job.repository);
+      }
     });
   }
 
@@ -118,8 +140,45 @@ class App extends Component {
     .catch(error => console.error(error));
   }
 
+  onCreateNewIssue(issue) {
+    const { selectedRepository } = this.state;
+
+    this.facade.createNewIssue(issue, selectedRepository)
+    .then(() => this.facade.loadIssuesForRepository(selectedRepository))
+    .then((issues) => {
+      this.facade.activeJobs()
+      .then(jobCount => {
+        this.setState({
+          issues: issues,
+          activeSyncJobs: jobCount,
+          newIssueDialogueOpen: false
+        });
+      });
+    });
+  }
+
+  abortNewIssue() {
+    this.setState({
+      newIssueDialogueOpen: false
+    });
+  }
+
+  showNewIssue() {
+    this.setState({
+      newIssueDialogueOpen: true
+    });
+  }
+
   render() {
-    const { issues, repositories, hasToken, connectivityStatus, activeSyncJobs } = this.state;
+    const {
+      issues,
+      repositories,
+      hasToken,
+      connectivityStatus,
+      activeSyncJobs,
+      viewer,
+      newIssueDialogueOpen
+    } = this.state;
 
     var configurationClassNames;
     var reposClassNames;
@@ -141,6 +200,7 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>Cabinet</h1>
+          <CurrentUser viewer={viewer} />
         </header>
         <div className={networkConnectivityClassNames}>
           {connectivityStatus}
@@ -173,12 +233,16 @@ class App extends Component {
             repositories={repositories}
           />
           <IssueList
+            abortNewIssue={this.abortNewIssue.bind(this)}
+            showNewIssue={this.showNewIssue.bind(this)}
             isMenuEnabled={isMenuEnabled}
             networkState={connectivityStatus}
             issues={issues}
+            newIssueDialogueOpen={newIssueDialogueOpen}
             onToggleIssueStatus={this.onToggleIssueStatus.bind(this)}
             selectedRepository={this.state.selectedRepository}
             reloadIssues={this.reloadIssuesForRepository.bind(this)}
+            onCreateNewIssue={this.onCreateNewIssue.bind(this)}
           />
         </div>
         <QueueIndicator activeJobs={activeSyncJobs} />

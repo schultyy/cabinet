@@ -1,0 +1,12 @@
+.new-issue-dialogue {
+  padding: 15px;
+}
+
+.new-issue-dialogue input {
+  width: 100%;
+}
+
+.new-issue-dialogue textarea {
+  width: 100%;
+  height: 200px;
+}

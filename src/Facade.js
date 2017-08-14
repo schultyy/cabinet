@@ -1,10 +1,14 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import gql from 'graphql-tag';
-import { getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
+import { getViewerDataQuery, getRepositoriesQuery, getIssuesForRepositoryQuery } from './queries';
 import Repository from './Repository';
 import Issue from './Issue';
 import DataContext from './DataContext';
 import SyncQueue from './SyncQueue';
+import {
+  TOGGLE_STATE,
+  CREATE_ISSUE
+} from './constants';
 
 export default class Facade {
   constructor(accessToken, networkStateChangedCallback) {
@@ -78,7 +82,13 @@ export default class Facade {
   }
 
   updateIssuesForRepository(repository) {
-    return this.fetchIssuesFromGitHub(repository);
+    return this.clearLocalIssues(repository)
+               .then(() => this.fetchIssuesFromGitHub(repository));
+  }
+
+  clearLocalIssues(repository) {
+    return this.dataContext.loadLocalIssuesForRepository(repository)
+                            .then((issues) => this.dataContext.deleteDocuments(issues));
   }
 
   loadIssuesForRepository(repository) {
@@ -112,11 +122,68 @@ export default class Facade {
 
     return this.dataContext.updateIssue(updatedIssue, 'state')
     .then(() => {
-      return this.syncQueue.enqueue(repository, issue);
+      return this.syncQueue.enqueue({
+        _id: `${repository.id + issue.id + issue.state}`,
+        repository,
+        issue,
+        type: TOGGLE_STATE
+      });
     });
   }
 
   activeJobs() {
     return this.syncQueue.jobCount();
+  }
+
+  createNewIssue(issue, repository) {
+    if(!issue.title) {
+      return Promise.reject({message: "Issue needs a title", issue });
+    }
+
+    if(!issue.body) {
+      issue.body = null;
+    }
+
+    issue.id = Date.now().toString();
+    issue.number = 0;
+    issue.state = "OPEN";
+    issue.createdAt = new Date();
+    issue.author = "";
+    issue.comments = [];
+
+    return this.getViewerData()
+    .then((viewer) => {
+      issue.author = {
+        login: viewer.login,
+        avatarUrl: viewer.avatarUrl
+      };
+
+      return this.dataContext.saveOrUpdateIssue(issue, repository)
+      .then(() => {
+        return this.syncQueue.enqueue({
+          _id: `CREATE_${repository.id + issue.id}`,
+          repository,
+          issue,
+          type: CREATE_ISSUE
+        });
+      });
+    });
+  }
+
+  getViewerData() {
+    return this.dataContext.loadViewer()
+    .catch((error) => {
+      if (error.status === 404 && error.name === 'not_found') {
+        return this.apolloClient.query({
+          query: gql(getViewerDataQuery)
+        })
+        .then((result) => result.data.viewer)
+        .then(viewer => {
+          return this.dataContext.saveViewerData(viewer);
+        });
+      } else {
+        return Promise.reject(error);
+      }
+    });
   }
 }
