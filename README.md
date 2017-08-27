@@ -6,9 +6,9 @@ It also ships with basic write functionalities, such as manipulating an issue's 
 
 ## Usage
 
-This app runs completely in your browser. You visit [https://schultyy.github.io/cabinet/](https://schultyy.github.io/cabinet/). The first time you'll see a dialouge which asks you to configure your [GitHub personal access token](https://github.com/settings/tokens/new). You'll need to permit full __repo__ access.
+This app runs completely in your browser. You visit [https://schultyy.github.io/cabinet/](https://schultyy.github.io/cabinet/). The first time you'll see a dialogue which asks you to configure your [GitHub personal access token](https://github.com/settings/tokens/new). You'll need to permit full __repo__ access.
 
-It then the first 100 repositories which are available under your user's account. For each repository you're able to download its issues by selecting it in the sidebar.
+It then loads the first 100 repositories which are available under your user's account. For each repository you're able to download its issues by selecting it in the sidebar.
 
 
 ## Development
